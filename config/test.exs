@@ -17,3 +17,8 @@ config :budget_simple, BudgetSimple.Repo,
   database: "budget_simple_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Speed up tests
+config :argon2_elixir,
+  t_cost: 2,
+  m_cost: 12
