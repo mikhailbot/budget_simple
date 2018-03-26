@@ -19,6 +19,12 @@ defmodule BudgetSimpleWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/api", BudgetSimpleWeb do
+    pipe_through :api
+
+    resources "/users", UserController, only: [:create]
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", BudgetSimpleWeb do
   #   pipe_through :api

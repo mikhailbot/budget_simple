@@ -37,6 +37,9 @@ defmodule BudgetSimpleWeb.Endpoint do
     key: "_budget_simple_key",
     signing_salt: "y1iDlHql"
 
+  # Allow CORS
+  plug CORSPlug
+
   plug BudgetSimpleWeb.Router
 
   @doc """

@@ -20,5 +20,5 @@ config :budget_simple, BudgetSimple.Repo,
 
 # Speed up tests
 config :argon2_elixir,
-  t_cost: 2,
-  m_cost: 12
+  t_cost: 1,
+  m_cost: 6

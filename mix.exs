@@ -43,6 +43,7 @@ defmodule BudgetSimple.Mixfile do
       {:cowboy, "~> 1.0"},
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},
+      {:cors_plug, "~> 1.5"},
     ]
   end
 
