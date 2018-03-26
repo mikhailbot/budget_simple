@@ -44,6 +44,7 @@ defmodule BudgetSimple.Mixfile do
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},
       {:cors_plug, "~> 1.5"},
+      {:secure_random, "~> 0.5"},
     ]
   end
 

@@ -23,6 +23,7 @@ defmodule BudgetSimpleWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, only: [:create]
+    resources "/sessions", SessionController, only: [:create]
   end
 
   # Other scopes may use custom stacks.

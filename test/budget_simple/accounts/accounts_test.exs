@@ -72,4 +72,16 @@ defmodule BudgetSimple.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_user(user)
     end
   end
+
+  describe "sessions" do
+    test "create_session/1 with valid data creates a session" do
+      user = user_fixture()
+      session = Accounts.create_session(%{user_id: user.id})
+      assert session
+    end
+
+    test "create_session/1 with invalid data creates a session" do
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_session(%{user_id: nil})
+    end
+  end
 end
