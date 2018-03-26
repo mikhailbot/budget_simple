@@ -24,6 +24,7 @@ defmodule BudgetSimpleWeb.Router do
 
     resources "/users", UserController, only: [:create]
     resources "/sessions", SessionController, only: [:create]
+    resources "/plans", PlanController, only: [:create]
   end
 
   # Other scopes may use custom stacks.
