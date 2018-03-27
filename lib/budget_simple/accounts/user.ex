@@ -8,6 +8,9 @@ defmodule BudgetSimple.Accounts.User do
     field :first_name, :string
     field :password, :string, virtual: true
 
+    has_many :plans, BudgetSimple.Budgets.Plan
+    many_to_many :shared_plans, BudgetSimple.Budgets.Plan, join_through: "shares"
+
     timestamps()
   end
 

@@ -2,11 +2,18 @@ defmodule BudgetSimple.Budgets do
   @moduledoc """
   The Budgets context.
   """
+  @behaviour Bodyguard.Policy
 
   import Ecto.Query, warn: false
   alias BudgetSimple.Repo
 
-  alias BudgetSimple.Budgets.Plan
+  alias BudgetSimple.Accounts
+  alias BudgetSimple.Budgets.{Plan, Share}
+
+  def authorize(:create_share, %Accounts.User{id: user_id}, %Plan{owner_id: user_id}), do: true
+
+  # Catch-all: deny everything else
+  def authorize(_, _, _), do: false
 
   @doc """
   Returns the list of plans.
@@ -55,50 +62,9 @@ defmodule BudgetSimple.Budgets do
     |> Repo.insert()
   end
 
-  @doc """
-  Updates a plan.
-
-  ## Examples
-
-      iex> update_plan(plan, %{field: new_value})
-      {:ok, %Plan{}}
-
-      iex> update_plan(plan, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_plan(%Plan{} = plan, attrs) do
-    plan
-    |> Plan.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Plan.
-
-  ## Examples
-
-      iex> delete_plan(plan)
-      {:ok, %Plan{}}
-
-      iex> delete_plan(plan)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_plan(%Plan{} = plan) do
-    Repo.delete(plan)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking plan changes.
-
-  ## Examples
-
-      iex> change_plan(plan)
-      %Ecto.Changeset{source: %Plan{}}
-
-  """
-  def change_plan(%Plan{} = plan) do
-    Plan.changeset(plan, %{})
+  def create_share(attrs \\ %{}) do
+    %Share{}
+    |> Share.changeset(attrs)
+    |> Repo.insert()
   end
 end

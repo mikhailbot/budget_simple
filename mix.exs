@@ -25,7 +25,7 @@ defmodule BudgetSimple.Mixfile do
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:test), do: ["lib", "test/support", "test/fixtures"]
   defp elixirc_paths(_),     do: ["lib"]
 
   # Specifies your project dependencies.
@@ -45,6 +45,8 @@ defmodule BudgetSimple.Mixfile do
       {:argon2_elixir, "~> 1.2"},
       {:cors_plug, "~> 1.5"},
       {:secure_random, "~> 0.5"},
+      {:bodyguard, "~> 2.2"},
+      {:faker, "~> 0.10", only: :test},
     ]
   end
 

@@ -120,6 +120,15 @@ defmodule BudgetSimple.Accounts do
   """
   def get_session!(id), do: Repo.get!(Session, id)
 
+  def get_session_user(token) do
+    user =
+        Repo.get_by!(Session, token: token)
+        |> Repo.preload(:user)
+        |> Map.get(:user)
+
+    {:ok, user}
+  end
+
   @doc """
   Creates a session.
 

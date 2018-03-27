@@ -4,7 +4,9 @@ defmodule BudgetSimple.Budgets.Plan do
 
   schema "plans" do
     field :name, :string
+
     belongs_to :user, BudgetSimple.Accounts.User, foreign_key: :owner_id
+    many_to_many :users, BudgetSimple.Accounts.User, join_through: "shares"
 
     timestamps()
   end
