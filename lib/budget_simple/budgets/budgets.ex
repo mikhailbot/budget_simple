@@ -10,7 +10,7 @@ defmodule BudgetSimple.Budgets do
   alias BudgetSimple.Accounts
   alias BudgetSimple.Budgets.{Plan, Share}
 
-  def authorize(:create_share, %Accounts.User{id: user_id}, %Plan{owner_id: user_id}), do: true
+  def authorize(:create_share, %Accounts.User{id: user_id}, %Plan{user_id: user_id}), do: true
 
   # Catch-all: deny everything else
   def authorize(_, _, _), do: false

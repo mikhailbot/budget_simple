@@ -5,7 +5,7 @@ defmodule BudgetSimple.Budgets.Plan do
   schema "plans" do
     field :name, :string
 
-    belongs_to :user, BudgetSimple.Accounts.User, foreign_key: :owner_id
+    belongs_to :user, BudgetSimple.Accounts.User
     many_to_many :users, BudgetSimple.Accounts.User, join_through: "shares"
 
     timestamps()
@@ -14,7 +14,7 @@ defmodule BudgetSimple.Budgets.Plan do
   @doc false
   def changeset(plan, attrs) do
     plan
-    |> cast(attrs, [:name, :owner_id])
-    |> validate_required([:name, :owner_id])
+    |> cast(attrs, [:name, :user_id])
+    |> validate_required([:name, :user_id])
   end
 end

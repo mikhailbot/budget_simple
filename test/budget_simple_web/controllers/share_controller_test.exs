@@ -17,7 +17,7 @@ defmodule BudgetSimpleWeb.ShareControllerTest do
   describe "create share" do
     test "renders share when have permissions", %{conn: conn} do
       user = Fixtures.User.create()
-      attrs = Map.put(@create_attrs, :owner_id, user.id)
+      attrs = Map.put(@create_attrs, :user_id, user.id)
 
       conn = post conn, plan_path(conn, :create), %{plan: attrs, token: user.token}
       plan_id = json_response(conn, 201)["data"]["id"]
@@ -30,7 +30,7 @@ defmodule BudgetSimpleWeb.ShareControllerTest do
 
     test "renders error when don't have permissions", %{conn: conn} do
       first_user = Fixtures.User.create()
-      attrs = Map.put(@create_attrs, :owner_id, first_user.id)
+      attrs = Map.put(@create_attrs, :user_id, first_user.id)
 
       conn = post conn, plan_path(conn, :create), %{plan: attrs, token: first_user.token}
       plan_id = json_response(conn, 201)["data"]["id"]

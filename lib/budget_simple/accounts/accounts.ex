@@ -37,6 +37,11 @@ defmodule BudgetSimple.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user_plans!(id) do
+    Repo.get!(User, id)
+    |> Repo.preload([:shared_plans, :plans])
+  end
+
   @doc """
   Creates a user.
 

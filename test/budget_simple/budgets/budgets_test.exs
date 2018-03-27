@@ -29,13 +29,13 @@
 
 #     test "list_plans/0 returns all plans" do
 #       user = user_fixture()
-#       plan = plan_fixture(%{owner_id: user.id})
+#       plan = plan_fixture(%{user_id: user.id})
 #       assert Budgets.list_plans() == [plan]
 #     end
 
 #     test "get_plan!/1 returns the plan with given id" do
 #       user = user_fixture()
-#       plan = plan_fixture(%{owner_id: user.id})
+#       plan = plan_fixture(%{user_id: user.id})
 #       assert Budgets.get_plan!(plan.id) == plan
 #     end
 

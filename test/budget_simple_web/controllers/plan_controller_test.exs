@@ -20,7 +20,7 @@ defmodule BudgetSimpleWeb.PlanControllerTest do
       user = Fixtures.User.create()
       attrs =
         @create_attrs
-        |> Map.put(:owner_id, user.id)
+        |> Map.put(:user_id, user.id)
 
       conn = post conn, plan_path(conn, :create), %{plan: attrs, token: user.token}
       body = json_response(conn, 201)
@@ -32,7 +32,7 @@ defmodule BudgetSimpleWeb.PlanControllerTest do
       user = Fixtures.User.create()
       attrs =
         @invalid_attrs
-        |> Map.put(:owner_id, user.id)
+        |> Map.put(:user_id, user.id)
 
       conn = post conn, plan_path(conn, :create), %{plan: attrs,  token: user.token}
       assert json_response(conn, 422)["errors"] != %{}
