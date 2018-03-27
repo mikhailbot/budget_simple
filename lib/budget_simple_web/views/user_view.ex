@@ -10,6 +10,15 @@ defmodule BudgetSimpleWeb.UserView do
     }
   end
 
+  def render("show.json", %{user: user, plans: plans, shared_plans: shared_plans}) do
+    %{
+      data: %{
+        user: render("user.json", %{user: user}),
+        plans: render_many(plans, BudgetSimpleWeb.PlanView, "show.json")
+      }
+    }
+  end
+
   def render("user.json", %{user: user}) do
     %{id: user.id, email: user.email}
   end

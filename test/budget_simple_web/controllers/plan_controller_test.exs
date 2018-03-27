@@ -28,14 +28,25 @@ defmodule BudgetSimpleWeb.PlanControllerTest do
       assert body["data"]["name"]
     end
 
-    test "renders errors when data is invalid", %{conn: conn} do
+    test "renders errors when data is invalid" do
       user = Fixtures.User.create()
       attrs =
         @invalid_attrs
         |> Map.put(:user_id, user.id)
 
-      conn = post conn, plan_path(conn, :create), %{plan: attrs,  token: user.token}
+      conn = post build_conn(), plan_path(build_conn(), :create), %{plan: attrs,  token: user.token}
       assert json_response(conn, 422)["errors"] != %{}
+    end
+  end
+
+  describe "list plans" do
+    test "renders plans made by the user" do
+      user = Fixtures.User.create()
+      plan = Fixtures.Plan.create(%{user_id: user.id})
+
+      conn = get build_conn(), plan_path(build_conn(), :index), %{token: user.token}
+      body = json_response(conn, 200)
+      assert List.first(body["data"]["plans"])["name"] == plan.name
     end
   end
 end

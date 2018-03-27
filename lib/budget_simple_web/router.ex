@@ -28,7 +28,7 @@ defmodule BudgetSimpleWeb.Router do
     pipe_through :auth
 
     resources "/sessions", SessionController, only: [:create]
-    resources "/plans", PlanController, only: [:create]
+    resources "/plans", PlanController, only: [:create, :index]
     resources "/shares", ShareController, only: [:create]
   end
 
