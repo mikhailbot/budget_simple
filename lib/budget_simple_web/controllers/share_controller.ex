@@ -5,12 +5,12 @@ defmodule BudgetSimpleWeb.ShareController do
 
   action_fallback BudgetSimpleWeb.FallbackController
 
-  def create(conn, %{"plan_id" => id}) do
+  def create(conn, %{"plan_id" => id, "user_to_share" => user_to_share_id}) do
     user = conn.assigns.current_user
     plan = Budgets.get_plan!(id)
 
     with :ok <- Bodyguard.permit(Budgets, :create_share, user, plan) do
-      with {:ok, share} <- Budgets.create_share(%{user_id: user.id, plan_id: plan.id}) do
+      with {:ok, share} <- Budgets.create_share(%{user_id: user_to_share_id, plan_id: plan.id}) do
         conn
         |> put_status(:created)
         |> render("show.json",share: share)

@@ -47,6 +47,20 @@ defmodule BudgetSimpleWeb.PlanControllerTest do
       conn = get build_conn(), plan_path(build_conn(), :index), %{token: user.token}
       body = json_response(conn, 200)
       assert List.first(body["data"]["plans"])["name"] == plan.name
+      refute List.first(body["data"]["shared_plans"])
+    end
+
+    test "renders plans shared to the user" do
+      first_user = Fixtures.User.create()
+      second_user = Fixtures.User.create()
+      plan = Fixtures.Plan.create(%{user_id: first_user.id})
+
+      assert post build_conn(), share_path(build_conn(), :create), %{plan_id: plan.id, user_to_share: second_user.id, token: first_user.token}
+
+      conn = get build_conn(), plan_path(build_conn(), :index), %{token: second_user.token}
+      body = json_response(conn, 200)
+      assert List.first(body["data"]["shared_plans"])["name"] == plan.name
+      refute List.first(body["data"]["plans"])
     end
   end
 end
