@@ -1,5 +1,5 @@
 ExUnit.start()
 
-Ecto.Adapters.SQL.Sandbox.mode(BudgetSimple.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(BudgetSimple.Repo, :auto)
 
 Faker.start()

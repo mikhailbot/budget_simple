@@ -21,7 +21,7 @@ defmodule BudgetSimpleWeb.ErrorView do
     }
   end
 
-  def render("403", _) do
+  def render("403.json", _) do
     %{
       error: "Forbidden",
       status: 403

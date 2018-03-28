@@ -47,14 +47,14 @@ defmodule BudgetSimpleWeb.Router do
   # end
 
   defp fetch_token_session(conn, _) do
-    with {:ok, user} <- BudgetSimple.Accounts.get_session_user(conn.params["token"]) do
+    with {:ok, user} <- Kernel.is_bitstring(conn.params["token"]), BudgetSimple.Accounts.get_session_user(conn.params["token"]) do
       conn
       |> assign(:current_user, user)
     else
       _ ->
         conn
         |> put_status(:forbidden)
-        |> render(BudgetSimpleWeb.ErrorView, "403", %{})
+        |> render(BudgetSimpleWeb.ErrorView, "403.json", %{})
         |> halt
     end
   end

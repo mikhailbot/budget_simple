@@ -21,6 +21,6 @@ defmodule BudgetSimpleWeb.FallbackController do
   def call(conn, {:error, :unauthorized}) do
     conn
     |> put_status(:unauthorized)
-    |> render(BudgetSimpleWeb.ErrorView, :"403")
+    |> render(BudgetSimpleWeb.ErrorView, :"403.json")
   end
 end
