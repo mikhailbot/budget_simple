@@ -12,11 +12,7 @@ defmodule BudgetSimple.Budgets do
 
   def authorize(:create_share, %Accounts.User{id: user_id}, %Plan{user_id: user_id}), do: true
 
-  def authorize(:create_category, user, plan_id) do
-    user =
-      user
-      |> Map.take([:plans, :shared_plans])
-
+  def authorize(:plan_access, user, plan_id) do
     user.plans ++ user.shared_plans
     |> Enum.any?(fn(p) -> p.id == plan_id end)
   end
@@ -81,5 +77,12 @@ defmodule BudgetSimple.Budgets do
     %Category{}
     |> Category.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def list_categories(plan_id) do
+    Category
+    |> where([c], c.plan_id == ^plan_id)
+    |> order_by(asc: :inserted_at)
+    |> Repo.all
   end
 end
