@@ -32,6 +32,7 @@ defmodule BudgetSimpleWeb.Router do
     resources "/shares", ShareController, only: [:create]
     resources "/category", CategoryController, only: [:index, :create]
     resources "/accounts", AccountController, only: [:create]
+    resources "/transactions", TransactionController, only: [:create, :update]
   end
 
   scope "/api", BudgetSimpleWeb do
