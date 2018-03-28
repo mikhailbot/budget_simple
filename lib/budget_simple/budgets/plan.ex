@@ -5,6 +5,7 @@ defmodule BudgetSimple.Budgets.Plan do
   schema "plans" do
     field :name, :string
 
+    has_many :accounts, BudgetSimple.Budgets.Account
     belongs_to :user, BudgetSimple.Accounts.User
     many_to_many :users, BudgetSimple.Accounts.User, join_through: "shares"
 
