@@ -26,16 +26,11 @@ defmodule BudgetSimpleWeb.CategoryController do
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, plan_id) do
-      with categories <- Budgets.list_categories(plan_id) do
-        conn
-        |> put_status(:ok)
-        |> render("index.json", categories: categories)
-      else
-        {:error, %Ecto.Changeset{} = changeset} ->
-          conn
-          |> put_status(:unprocessable_entity)
-          |> render(BudgetSimpleWeb.ErrorView, "error.json", changeset: changeset)
-      end
+      categories = Budgets.list_categories(plan_id)
+
+      conn
+      |> put_status(:ok)
+      |> render("index.json", categories: categories)
     end
   end
 end

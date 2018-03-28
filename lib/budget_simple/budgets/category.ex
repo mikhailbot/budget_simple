@@ -5,7 +5,7 @@ defmodule BudgetSimple.Budgets.Category do
 
   schema "categories" do
     field :name, :string
-    belongs_to :plan, BudgetSimple.Accounts.Plan
+    belongs_to :plan, BudgetSimple.Budgets.Plan
 
     timestamps()
   end
