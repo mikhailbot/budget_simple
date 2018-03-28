@@ -126,10 +126,11 @@ defmodule BudgetSimple.Accounts do
   def get_session!(id), do: Repo.get!(Session, id)
 
   def get_session_user(token) do
+    session = Repo.get_by!(Session, token: token)
     user =
-        Repo.get_by!(Session, token: token)
-        |> Repo.preload(:user)
-        |> Map.get(:user)
+      User
+      |> Repo.get!(session.user_id)
+      |> Repo.preload([:plans, :shared_plans])
 
     {:ok, user}
   end

@@ -8,9 +8,18 @@ defmodule BudgetSimple.Budgets do
   alias BudgetSimple.Repo
 
   alias BudgetSimple.Accounts
-  alias BudgetSimple.Budgets.{Plan, Share}
+  alias BudgetSimple.Budgets.{Plan, Share, Category}
 
   def authorize(:create_share, %Accounts.User{id: user_id}, %Plan{user_id: user_id}), do: true
+
+  def authorize(:create_category, user, plan_id) do
+    user =
+      user
+      |> Map.take([:plans, :shared_plans])
+
+    user.plans ++ user.shared_plans
+    |> Enum.any?(fn(p) -> p.id == plan_id end)
+  end
 
   # Catch-all: deny everything else
   def authorize(_, _, _), do: false
@@ -65,6 +74,12 @@ defmodule BudgetSimple.Budgets do
   def create_share(attrs \\ %{}) do
     %Share{}
     |> Share.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def create_category(attrs \\ %{}) do
+    %Category{}
+    |> Category.changeset(attrs)
     |> Repo.insert()
   end
 end
