@@ -4,7 +4,8 @@ defmodule BudgetSimpleWeb.TransactionControllerTest do
   alias BudgetSimple.Fixtures
 
   @create_attrs %{date: "2011-10-06T02:48:00.000Z", outflow: 1000}
-  @invalid_attrs %{outflow: 1000}
+  @invalid_attrs_inflow_outflow %{date: "2011-10-06T02:48:00.000Z"}
+  @invalid_attrs_date %{outflow: 1000}
   @update_attrs %{inflow: 1000}
 
   describe "create transaction" do
@@ -27,11 +28,22 @@ defmodule BudgetSimpleWeb.TransactionControllerTest do
       assert json_response(conn, 401)
     end
 
+    test "renders error when don't have inflow or outflow" do
+      user = Fixtures.User.create()
+      plan = Fixtures.Plan.create(%{user_id: user.id})
+
+      conn = post build_conn(), transaction_path(build_conn(), :create), %{transaction: @invalid_attrs_inflow_outflow, plan_id: plan.id, token: user.token}
+      body = json_response(conn, 422)
+
+      assert body["status"] == 422
+      assert body["errors"]
+    end
+
     test "renders error when don't have a date" do
       user = Fixtures.User.create()
       plan = Fixtures.Plan.create(%{user_id: user.id})
 
-      conn = post build_conn(), transaction_path(build_conn(), :create), %{transaction: @invalid_attrs, plan_id: plan.id, token: user.token}
+      conn = post build_conn(), transaction_path(build_conn(), :create), %{transaction: @invalid_attrs_date, plan_id: plan.id, token: user.token}
       body = json_response(conn, 422)
 
       assert body["status"] == 422
