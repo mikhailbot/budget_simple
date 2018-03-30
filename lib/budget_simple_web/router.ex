@@ -47,7 +47,7 @@ defmodule BudgetSimpleWeb.Router do
   # end
 
   defp fetch_token_session(conn, _) do
-    with {:ok, user} <- Kernel.is_bitstring(conn.params["token"]), BudgetSimple.Accounts.get_session_user(conn.params["token"]) do
+    with true <- Kernel.is_bitstring(conn.params["token"]), {:ok, user} <- BudgetSimple.Accounts.get_session_user(conn.params["token"]) do
       conn
       |> assign(:current_user, user)
     else
