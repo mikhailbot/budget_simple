@@ -92,10 +92,16 @@ defmodule BudgetSimple.Budgets do
     |> Repo.all
   end
 
-  def create_account(attrs \\ %{}) do
+  def create_account(%User{} = user, %Plan{} = plan, attrs \\ %{}) do
     %Account{}
     |> Account.changeset(attrs)
+    |> Ecto.Changeset.put_change(:user_id, user.id)
+    |> Ecto.Changeset.put_change(:plan_id, plan.id)
     |> Repo.insert()
+  end
+
+  def change_account(%Account{} = account) do
+    Account.changeset(account, %{})
   end
 
   def create_transaction(attrs \\ %{}) do

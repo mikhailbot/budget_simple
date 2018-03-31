@@ -16,8 +16,8 @@ defmodule BudgetSimple.Budgets.Account do
   @doc false
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:type, :name, :user_id, :plan_id])
-    |> validate_required([:type, :name, :user_id, :plan_id])
+    |> cast(attrs, [:type, :name])
+    |> validate_required([:type, :name])
     |> validate_inclusion(:type, ["credit_card", "debit_card", "line_of_credit", "investment"])
   end
 end
