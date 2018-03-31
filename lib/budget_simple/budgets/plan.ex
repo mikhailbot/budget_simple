@@ -15,7 +15,7 @@ defmodule BudgetSimple.Budgets.Plan do
   @doc false
   def changeset(plan, attrs) do
     plan
-    |> cast(attrs, [:name, :user_id])
-    |> validate_required([:name, :user_id])
+    |> cast(attrs, [:name])
+    |> validate_required([:name])
   end
 end

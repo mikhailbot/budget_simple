@@ -10,10 +10,19 @@ defmodule BudgetSimple.Accounts do
     Repo.all(User)
   end
 
-  def get(id), do: Repo.get(User, id)
+  def get(id) do
+    Repo.get(User, id)
+    |> Repo.preload([:shared_plans, :plans])
+  end
 
   def get_by(%{"email" => email}) do
     Repo.get_by(User, email: email)
+    |> Repo.preload([:shared_plans, :plans])
+  end
+
+  def get_user_plans!(id) do
+    Repo.get!(User, id)
+    |> Repo.preload([:shared_plans, :plans])
   end
 
   def create_user(attrs) do

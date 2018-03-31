@@ -8,6 +8,7 @@ defmodule BudgetSimple.Budgets do
   alias BudgetSimple.Repo
 
   alias BudgetSimple.Accounts
+  alias BudgetSimple.Accounts.User
   alias BudgetSimple.Budgets.{Plan, Share, Category, Account, Transaction}
 
   def authorize(:create_share, %Accounts.User{id: user_id}, %Plan{user_id: user_id}), do: true
@@ -61,10 +62,15 @@ defmodule BudgetSimple.Budgets do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_plan(attrs \\ %{}) do
+  def create_plan(%User{} = user, attrs \\ %{}) do
     %Plan{}
     |> Plan.changeset(attrs)
+    |> Ecto.Changeset.put_change(:user_id, user.id)
     |> Repo.insert()
+  end
+
+  def change_plan(%Plan{} = plan) do
+    Plan.changeset(plan, %{})
   end
 
   def create_share(attrs \\ %{}) do

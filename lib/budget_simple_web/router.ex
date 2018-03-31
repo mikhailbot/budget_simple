@@ -16,6 +16,7 @@ defmodule BudgetSimpleWeb.Router do
     get "/", PageController, :index
     resources "/users", UserController
     resources "/sessions", SessionController, only: [:new, :create, :delete]
+    resources "/plans", PlanController, only: [:show, :create, :new, :index]
   end
 
 end

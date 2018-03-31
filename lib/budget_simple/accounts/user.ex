@@ -9,6 +9,10 @@ defmodule BudgetSimple.Accounts.User do
     field :password_hash, :string
     field :sessions, {:map, :integer}, default: %{}
 
+    has_many :plans, BudgetSimple.Budgets.Plan
+    has_many :accounts, BudgetSimple.Budgets.Account
+    many_to_many :shared_plans, BudgetSimple.Budgets.Plan, join_through: "shares"
+
     timestamps()
   end
 
