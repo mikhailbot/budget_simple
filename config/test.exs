@@ -21,13 +21,5 @@ config :budget_simple, BudgetSimple.Repo,
 
 # Speed up tests
 config :argon2_elixir,
-  t_cost: 1,
-  m_cost: 6
-
-
-# Comeonin password hashing test config
-#config :argon2_elixir,
-  #t_cost: 2,
-  #m_cost: 8
-config :bcrypt_elixir, log_rounds: 4
-#config :pbkdf2_elixir, rounds: 1
+  t_cost: 2,
+  m_cost: 8
