@@ -16,7 +16,10 @@ defmodule BudgetSimpleWeb.PlanController do
 
   def create(conn, %{"plan" => plan_params}) do
     with {:ok, %Plan{} = plan} <- Budgets.create_plan(conn.assigns.current_user, plan_params) do
-      render(conn, "show.html", plan: plan)
+      accounts = Budgets.list_accounts(plan.id)
+      categories = Budgets.list_categories(plan.id)
+
+      render(conn, "show.html", plan: plan, accounts: accounts, categories: categories)
     else
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

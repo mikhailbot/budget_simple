@@ -40,7 +40,6 @@ defmodule BudgetSimpleWeb.TransactionController do
 
   def create(conn, %{"transaction" => transaction_params, "plan_id" => plan_id, "account_id" => account_id,}) do
     user = conn.assigns.current_user
-    IO.inspect account_id
     account = Budgets.get_account!(String.to_integer(account_id))
 
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, String.to_integer(plan_id)) do

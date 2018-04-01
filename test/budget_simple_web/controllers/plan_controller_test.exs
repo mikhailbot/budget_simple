@@ -27,7 +27,7 @@ defmodule BudgetSimpleWeb.PlanControllerTest do
   @tag login: "reg@example.com"
   test "lists all entries on index", %{conn: conn} do
     conn = get(conn, plan_path(conn, :index))
-    assert html_response(conn, 200) =~ "Listing Plans"
+    assert html_response(conn, 200) =~ "Your Budget Plans"
   end
 
   test "renders /plans error for unauthorized user", %{conn: conn}  do

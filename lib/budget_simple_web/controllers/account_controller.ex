@@ -32,7 +32,9 @@ defmodule BudgetSimpleWeb.AccountController do
 
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, plan.id) do
       with {:ok, account} <- Budgets.create_account(user, plan, account_params) do
-        render(conn, "show.html", account: account)
+        transactions = Budgets.list_transactions(account.id)
+
+        render(conn, "show.html", account: account, plan_id: plan.id, transactions: transactions)
       else
         {:error, %Ecto.Changeset{} = changeset} ->
           render(conn, "new.html", changeset: changeset, plan: plan)
