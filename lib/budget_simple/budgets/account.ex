@@ -10,6 +10,8 @@ defmodule BudgetSimple.Budgets.Account do
     belongs_to :user, BudgetSimple.Accounts.User
     belongs_to :plan, BudgetSimple.Budgets.Plan
 
+    has_many :transactions, BudgetSimple.Budgets.Transaction
+
     timestamps()
   end
 

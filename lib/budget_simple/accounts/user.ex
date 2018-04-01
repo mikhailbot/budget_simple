@@ -11,6 +11,8 @@ defmodule BudgetSimple.Accounts.User do
 
     has_many :plans, BudgetSimple.Budgets.Plan
     has_many :accounts, BudgetSimple.Budgets.Account
+    has_many :transactions, BudgetSimple.Budgets.Transaction
+
     many_to_many :shared_plans, BudgetSimple.Budgets.Plan, join_through: "shares"
 
     timestamps()

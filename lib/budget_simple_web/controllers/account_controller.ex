@@ -10,7 +10,7 @@ defmodule BudgetSimpleWeb.AccountController do
   action_fallback BudgetSimpleWeb.FallbackController
 
   def new(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"plan_id" => plan_id}) do
-    with :ok <- Bodyguard.permit(Budgets, :plan_access, conn.assigns.current_user, String.to_integer(plan_id)) do
+    with :ok <- Bodyguard.permit(Budgets, :plan_access, user, String.to_integer(plan_id)) do
       changeset =
         %Account{plan_id: plan_id}
         |> Budgets.change_account
@@ -29,13 +29,9 @@ defmodule BudgetSimpleWeb.AccountController do
   def create(conn, %{"account" => account_params, "plan_id" => plan_id}) do
     user = conn.assigns.current_user
     plan = Budgets.get_plan!(plan_id)
-    attrs =
-      account_params
-      |> Map.put("plan_id", plan_id)
-      |> Map.put("user_id", user.id)
 
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, plan.id) do
-      with {:ok, account} <- Budgets.create_account(user, plan, attrs) do
+      with {:ok, account} <- Budgets.create_account(user, plan, account_params) do
         render(conn, "show.html", account: account)
       else
         {:error, %Ecto.Changeset{} = changeset} ->
@@ -49,7 +45,13 @@ defmodule BudgetSimpleWeb.AccountController do
     end
   end
 
-  def index(conn, _) do
-
+  def show(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"plan_id" => plan_id, "id" => id}) do
+    with :ok <- Bodyguard.permit(Budgets, :plan_access, user, String.to_integer(plan_id)) do
+      account = Budgets.get_account!(id)
+      render(conn, "show.html", account: account)
+    else
+      _ ->
+        render(conn, BudgetSimpleWeb.ErrorView, "403.json", %{})
+    end
   end
 end

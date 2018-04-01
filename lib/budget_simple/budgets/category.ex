@@ -6,6 +6,7 @@ defmodule BudgetSimple.Budgets.Category do
   schema "categories" do
     field :name, :string
     belongs_to :plan, BudgetSimple.Budgets.Plan
+    has_many :transactions, BudgetSimple.Budgets.Transaction
 
     timestamps()
   end
@@ -13,7 +14,7 @@ defmodule BudgetSimple.Budgets.Category do
   @doc false
   def changeset(category, attrs) do
     category
-    |> cast(attrs, [:name, :plan_id])
-    |> validate_required([:name, :plan_id])
+    |> cast(attrs, [:name])
+    |> validate_required([:name])
   end
 end

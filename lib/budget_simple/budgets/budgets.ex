@@ -79,10 +79,16 @@ defmodule BudgetSimple.Budgets do
     |> Repo.insert()
   end
 
-  def create_category(attrs \\ %{}) do
+  def create_category(%User{} = user, %Plan{} = plan, attrs \\ %{}) do
     %Category{}
     |> Category.changeset(attrs)
+    |> Ecto.Changeset.put_change(:user_id, user.id)
+    |> Ecto.Changeset.put_change(:plan_id, plan.id)
     |> Repo.insert()
+  end
+
+  def change_category(%Category{} = category) do
+    Category.changeset(category, %{})
   end
 
   def list_categories(plan_id) do
@@ -91,6 +97,8 @@ defmodule BudgetSimple.Budgets do
     |> order_by(asc: :inserted_at)
     |> Repo.all
   end
+
+  def get_account!(id), do: Repo.get!(Account, id)
 
   def create_account(%User{} = user, %Plan{} = plan, attrs \\ %{}) do
     %Account{}
@@ -104,9 +112,16 @@ defmodule BudgetSimple.Budgets do
     Account.changeset(account, %{})
   end
 
-  def create_transaction(attrs \\ %{}) do
+  def list_transactions(account_id) do
+    from(t in Transaction, where: t.account_id == ^account_id)
+    |> Repo.all()
+  end
+
+  def create_transaction(%User{} = user, %Account{} = account, attrs \\ %{}) do
     %Transaction{}
     |> Transaction.create_changeset(attrs)
+    |> Ecto.Changeset.put_change(:user_id, user.id)
+    |> Ecto.Changeset.put_change(:account_id, account.id)
     |> Repo.insert()
   end
 
@@ -116,6 +131,10 @@ defmodule BudgetSimple.Budgets do
     transaction
     |> Transaction.update_changeset(attrs)
     |> Repo.update()
+  end
+
+  def change_transaction(%Transaction{} = transaction) do
+    Transaction.create_changeset(transaction, %{})
   end
 
 end
