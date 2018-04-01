@@ -1,0 +1,3 @@
+<h2>Show Category: <%= @category.name %></h2>
+
+<span><%= link "Back", to: plan_path(@conn, :index) %></span>

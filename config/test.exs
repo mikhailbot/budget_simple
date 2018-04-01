@@ -7,7 +7,7 @@ config :budget_simple, BudgetSimpleWeb.Endpoint,
   server: false
 
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger, level: :error
 
 # Configure your database
 config :budget_simple, BudgetSimple.Repo,
@@ -21,5 +21,5 @@ config :budget_simple, BudgetSimple.Repo,
 
 # Speed up tests
 config :argon2_elixir,
-  t_cost: 1,
-  m_cost: 6
+  t_cost: 2,
+  m_cost: 8

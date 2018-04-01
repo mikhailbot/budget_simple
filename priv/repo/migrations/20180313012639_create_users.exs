@@ -3,9 +3,9 @@ defmodule BudgetSimple.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :first_name, :string
       add :email, :string
       add :password_hash, :string
+      add :sessions, {:map, :integer}, default: "{}"
 
       timestamps()
     end

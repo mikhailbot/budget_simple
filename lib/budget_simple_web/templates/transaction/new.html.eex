@@ -1,0 +1,44 @@
+<h2>New Transaction</h2>
+
+<%= form_for @changeset, plan_account_transaction_path(@conn, :create, @plan, @account), fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <div>
+    <%= label f, :date %>
+    <%= date_input f, :date %>
+    <%= error_tag f, :date %>
+  </div>
+
+  <div>
+    <%= label f, :merchant %>
+    <%= text_input f, :merchant %>
+    <%= error_tag f, :merchant %>
+  </div>
+
+  <div>
+    <%= select f, :category_id, Enum.map(@categories, &{&1.name, &1.id}) %>
+    <%= error_tag f, :category_id %>
+  </div>
+
+  <div>
+    <%= label f, :outflow %>
+    <%= number_input f, :outflow %>
+    <%= error_tag f, :outflow %>
+  </div>
+
+  <div>
+    <%= label f, :inflow %>
+    <%= number_input f, :inflow %>
+    <%= error_tag f, :inflow %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<span><%= link "Back", to: plan_path(@conn, :index) %></span>

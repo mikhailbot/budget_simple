@@ -7,11 +7,11 @@ defmodule BudgetSimple.Budgets.Transaction do
     field :date, :date
     field :inflow, :integer
     field :outflow, :integer
-    field :user_id, :id
-    field :plan_id, :id
-    field :category_id, :id
-    field :account_id, :id
     field :merchant, :string
+
+    belongs_to :category, BudgetSimple.Budgets.Category
+    belongs_to :account, BudgetSimple.Budgets.Account
+    belongs_to :user, BudgetSimple.Accounts.User
 
     timestamps()
   end
@@ -19,8 +19,8 @@ defmodule BudgetSimple.Budgets.Transaction do
   @doc false
   def create_changeset(transaction, attrs) do
     transaction
-    |> cast(attrs, [:date, :inflow, :outflow, :user_id, :plan_id, :category_id, :account_id, :merchant])
-    |> validate_required([:date, :user_id, :plan_id])
+    |> cast(attrs, [:date, :inflow, :outflow, :merchant])
+    |> validate_required([:date])
     |> validate_required_inclusion([:inflow, :outflow])
   end
 

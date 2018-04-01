@@ -7,55 +7,23 @@ defmodule BudgetSimpleWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-  end
-
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
-  pipeline :auth do
-    plug :fetch_token_session
+    plug Phauxth.Authenticate
   end
 
   scope "/", BudgetSimpleWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :browser
 
     get "/", PageController, :index
-  end
+    resources "/users", UserController
+    resources "/sessions", SessionController, only: [:new, :create, :delete]
 
-  scope "/api", BudgetSimpleWeb do
-    pipe_through :api
-    pipe_through :auth
+    resources "/plans", PlanController, only: [:show, :create, :new, :index] do
+      resources "/categories", CategoryController, only: [:new, :create, :show]
 
-    resources "/sessions", SessionController, only: [:create]
-    resources "/plans", PlanController, only: [:create, :index]
-    resources "/shares", ShareController, only: [:create]
-    resources "/category", CategoryController, only: [:index, :create]
-    resources "/accounts", AccountController, only: [:create]
-    resources "/transactions", TransactionController, only: [:create, :update]
-  end
-
-  scope "/api", BudgetSimpleWeb do
-    pipe_through :api
-
-    resources "/users", UserController, only: [:create]
-  end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", BudgetSimpleWeb do
-  #   pipe_through :api
-  # end
-
-  defp fetch_token_session(conn, _) do
-    with true <- Kernel.is_bitstring(conn.params["token"]), {:ok, user} <- BudgetSimple.Accounts.get_session_user(conn.params["token"]) do
-      conn
-      |> assign(:current_user, user)
-    else
-      _ ->
-        conn
-        |> put_status(:forbidden)
-        |> render(BudgetSimpleWeb.ErrorView, "403.json", %{})
-        |> halt
+      resources "/accounts", AccountController, only: [:new, :create, :show] do
+        resources "/transactions", TransactionController, only: [:new, :create, :show, :index]
+      end
     end
   end
+
 end

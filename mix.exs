@@ -47,6 +47,7 @@ defmodule BudgetSimple.Mixfile do
       {:secure_random, "~> 0.5"},
       {:bodyguard, "~> 2.2"},
       {:faker, "~> 0.10", only: :test},
+      {:phauxth, "~> 1.2"},
     ]
   end
 

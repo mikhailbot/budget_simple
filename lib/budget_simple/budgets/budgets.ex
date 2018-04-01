@@ -8,6 +8,7 @@ defmodule BudgetSimple.Budgets do
   alias BudgetSimple.Repo
 
   alias BudgetSimple.Accounts
+  alias BudgetSimple.Accounts.User
   alias BudgetSimple.Budgets.{Plan, Share, Category, Account, Transaction}
 
   def authorize(:create_share, %Accounts.User{id: user_id}, %Plan{user_id: user_id}), do: true
@@ -61,10 +62,15 @@ defmodule BudgetSimple.Budgets do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_plan(attrs \\ %{}) do
+  def create_plan(%User{} = user, attrs \\ %{}) do
     %Plan{}
     |> Plan.changeset(attrs)
+    |> Ecto.Changeset.put_change(:user_id, user.id)
     |> Repo.insert()
+  end
+
+  def change_plan(%Plan{} = plan) do
+    Plan.changeset(plan, %{})
   end
 
   def create_share(attrs \\ %{}) do
@@ -73,10 +79,16 @@ defmodule BudgetSimple.Budgets do
     |> Repo.insert()
   end
 
-  def create_category(attrs \\ %{}) do
+  def create_category(%User{} = user, %Plan{} = plan, attrs \\ %{}) do
     %Category{}
     |> Category.changeset(attrs)
+    |> Ecto.Changeset.put_change(:user_id, user.id)
+    |> Ecto.Changeset.put_change(:plan_id, plan.id)
     |> Repo.insert()
+  end
+
+  def change_category(%Category{} = category) do
+    Category.changeset(category, %{})
   end
 
   def list_categories(plan_id) do
@@ -86,15 +98,30 @@ defmodule BudgetSimple.Budgets do
     |> Repo.all
   end
 
-  def create_account(attrs \\ %{}) do
+  def get_account!(id), do: Repo.get!(Account, id)
+
+  def create_account(%User{} = user, %Plan{} = plan, attrs \\ %{}) do
     %Account{}
     |> Account.changeset(attrs)
+    |> Ecto.Changeset.put_change(:user_id, user.id)
+    |> Ecto.Changeset.put_change(:plan_id, plan.id)
     |> Repo.insert()
   end
 
-  def create_transaction(attrs \\ %{}) do
+  def change_account(%Account{} = account) do
+    Account.changeset(account, %{})
+  end
+
+  def list_transactions(account_id) do
+    from(t in Transaction, where: t.account_id == ^account_id)
+    |> Repo.all()
+  end
+
+  def create_transaction(%User{} = user, %Account{} = account, attrs \\ %{}) do
     %Transaction{}
     |> Transaction.create_changeset(attrs)
+    |> Ecto.Changeset.put_change(:user_id, user.id)
+    |> Ecto.Changeset.put_change(:account_id, account.id)
     |> Repo.insert()
   end
 
@@ -104,6 +131,10 @@ defmodule BudgetSimple.Budgets do
     transaction
     |> Transaction.update_changeset(attrs)
     |> Repo.update()
+  end
+
+  def change_transaction(%Transaction{} = transaction) do
+    Transaction.create_changeset(transaction, %{})
   end
 
 end
