@@ -13,32 +13,34 @@
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
-  <body>
-    <div class="mw7 center mt4 sans-serif">
-      <header>
-        <nav class="flex">
-          <a class="f4 blue link w-25" href="/" title="Home">
-            <span class="b">Budget</span>Simple
-          </a>
-
-          <%= if @current_user do %>
-            <div class="w-75 tr">
-              <%= link "Budgets", to: plan_path(@conn, :index), class: "link dib mr3 mid-gray" %>
-              <%= link "Logout", to: session_path(@conn, :delete, @current_user), method: :delete, class: "link dib mr3 mid-gray" %>
-            </div>
-          <% else %>
-            <div class="w-75 tr">
-              <%= link "Signup", to: user_path(@conn, :new), class: "link dib mr3 mid-gray" %>
-              <%= link "Login", to: session_path(@conn, :new), class: "link dib mr3 mid-gray" %>
-            </div>
-          <% end %>
+  <body class="bg-near-white sans-serif">
+    <div class="bg-blue h4-5 h5-ns">
+      <header class="mw7 center pt4 pt5-ns">
+        <nav class="mw-inherit w-100 blue tc white relative fixed flex-ns items-center justify-between">
+          <div class="ml3 tl">
+            <a href="/" class="blue b link bg-white br-100 pa2 ba bw2 b-solid b-white f2 h3 w3 dib tc">B</a>
+          </div>
+          <input type="checkbox" id="burger" class="absolute top-2 right-1 dn">
+          <label for="burger" class="dn-ns pointer absolute top-1 right-1">
+            <div class="mid-gray b dib f5 bg-near-white br2 pa2">Menu</div>
+          </label>
+          <ul class="overflow-hidden menu dib-ns list tc pl0 pt3-ns mv0 f3 f5-ns">
+            <%= if @current_user do %>
+              <li class="pt4 pb3 di-ns"><%= link "Budgets", to: plan_path(@conn, :index), class: "link di-ns mr3 near-white" %></li>
+              <li class="pv3 di-ns"><%= link "Logout", to: session_path(@conn, :delete, @current_user), method: :delete, class: "link di-ns mr3 near-white" %></li>
+              </div>
+            <% else %>
+              <li class="pt5 pv3 di-ns"><%= link "Signup", to: user_path(@conn, :new), class: "link di-ns mr3 near-white" %></li>
+              <li class="pv3 di-ns"><%= link "Login", to: session_path(@conn, :new), class: "link di-ns mr3 near-white" %></li>
+            <% end %>
+          </ul>
         </nav>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
-      <main role="main">
+      <main role="main" class="mw7 center nt6-5">
         <%= render @view_module, @view_template, assigns %>
       </main>
     </div>

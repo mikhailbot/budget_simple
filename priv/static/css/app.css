@@ -1,3 +1,38 @@
 /* This file is for your main application css. */
+@media screen and (max-width: 30em) {
+  .h4-5 { height: 15rem; }
+  .nt6-5 { margin-top: -10rem; }
+}
+
+.nt6-5 { margin-top: -10rem; }
+
+.card-dim:hover {
+  background: #EEEEEE;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.menu {
+  min-height: 2.2rem;
+  max-height: 0;
+  background: #357EDD;
+  transition: max-height 0.4s, padding-bottom 0.4s;
+}
+
+#burger:checked ~ .menu {
+  max-height: 25rem;
+  padding-bottom: 1rem;
+}
+
+.mw-inherit {
+  max-width: inherit;
+}
+
+@media screen and (min-width: 30em) {
+  .nt6-5 { margin-top: -8rem; }
+}
+
 
 /*# sourceMappingURL=app.css.map*/
