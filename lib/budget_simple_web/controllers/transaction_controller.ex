@@ -9,7 +9,7 @@ defmodule BudgetSimpleWeb.TransactionController do
 
   action_fallback BudgetSimpleWeb.FallbackController
 
-  def index(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"account_id" => account_id, "plan_id" => plan_id}) do
+  def index(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"plan_id" => plan_id, "account_id" => account_id}) do
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, String.to_integer(plan_id)) do
       transactions = Budgets.list_transactions(account_id)
       plan = Budgets.get_plan!(plan_id)
@@ -19,7 +19,7 @@ defmodule BudgetSimpleWeb.TransactionController do
     end
   end
 
-  def new(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"account_id" => account_id, "plan_id" => plan_id}) do
+  def new(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"plan_id" => plan_id, "account_id" => account_id}) do
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, String.to_integer(plan_id)) do
       changeset =
         %Transaction{account_id: account_id}
@@ -40,7 +40,8 @@ defmodule BudgetSimpleWeb.TransactionController do
 
   def create(conn, %{"transaction" => transaction_params, "plan_id" => plan_id, "account_id" => account_id,}) do
     user = conn.assigns.current_user
-    account = Budgets.get_account!(account_id)
+    IO.inspect account_id
+    account = Budgets.get_account!(String.to_integer(account_id))
 
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, String.to_integer(plan_id)) do
       with {:ok, transaction} <- Budgets.create_transaction(user, account, transaction_params) do
