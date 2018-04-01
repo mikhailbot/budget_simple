@@ -19,7 +19,7 @@ defmodule BudgetSimple.Budgets.Transaction do
   @doc false
   def create_changeset(transaction, attrs) do
     transaction
-    |> cast(attrs, [:date, :inflow, :outflow, :merchant])
+    |> cast(attrs, [:date, :inflow, :outflow, :merchant, :category_id])
     |> validate_required([:date])
     |> validate_required_inclusion([:inflow, :outflow])
   end

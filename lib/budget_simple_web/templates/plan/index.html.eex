@@ -1,19 +1,24 @@
-<h2>Listing Plans</h2>
+<div class="mt5">
+  <h2>Your Budget Plans</h2>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for plan <- @plans do %>
-    <tr>
-      <td><%= plan.name %></td>
-      <td class="text-right">
-        <span><%= link "Show", to: plan_path(@conn, :show, plan), class: "btn btn-default btn-xs"%></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
+  <div class="flex">
+    <%= for plan <- @plans do %>
+      <div class="mw5 bg-white br3 pa3 pa4-ns mv3 mh2 ba b--black-10">
+        <div class="tc">
+          <div class="f4 b mb2"><%= plan.name %></div>
+          <div class="fw4 gray mt0">
+            <%= link "View", to: plan_path(@conn, :show, plan), class: "f6 blue b ttu link"%>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="">
+  <h2>Shared Budget Plans</h2>
+
+  <%= for plan <- @shared_plans do %>
+    <%= link plan.name, to: plan_path(@conn, :show, plan), class: "btn btn-default btn-xs"%>
+  <% end %>
+</div>

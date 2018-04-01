@@ -1,3 +1,11 @@
-<h2>Show Account: <%= @account.name %></h2>
+<div class="mt5">
+  <h1><%= @account.name %></h1>
+  <%= link "Add Transaction", to: plan_account_transaction_path(@conn, :new, @plan_id, @account) %>
 
-<span><%= link "Back", to: plan_path(@conn, :index) %></span>
+  <ul>
+    <%= for transaction <- @transactions do %>
+      <li><%= transaction.date %> - <%= transaction.merchant %> - <%= transaction.outflow %> - <%= transaction.inflow %> - <%= transaction.category.name %></li>
+    <% end %>
+  </ul>
+  <span><%= link "Back", to: plan_path(@conn, :show, @plan_id) %></span>
+</div>

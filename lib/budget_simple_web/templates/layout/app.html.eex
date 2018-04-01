@@ -7,27 +7,32 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Welcome to Phauxth - an extensible authentication library for Elixir web apps</title>
+    <title>BudgetSimple</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.9.1/css/tachyons.min.css"/>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="<%= page_path @conn, :index %>">Home</a></li>
-              <%= if @current_user do %>
-              <li><a href="<%= user_path @conn, :index %>">Users</a></li>
-              <li><a href="<%= user_path(@conn, :show, @current_user.id) %>"><%= @current_user.email %></a></li>
-              <li><%= link "Logout", to: session_path(@conn, :delete, @current_user), method: :delete %></li>
-              <% else %>
-              <li><a href="<%= user_path @conn, :new %>">New user</a></li>
-              <li><a href="<%= session_path @conn, :new %>">Login</a></li>
-              <% end %>
-          </ul>
+    <div class="mw7 center mt4 sans-serif">
+      <header>
+        <nav class="flex">
+          <a class="f4 blue link w-25" href="/" title="Home">
+            <span class="b">Budget</span>Simple
+          </a>
+
+          <%= if @current_user do %>
+            <div class="w-75 tr">
+              <%= link "Budgets", to: plan_path(@conn, :index), class: "link dib mr3 mid-gray" %>
+              <%= link "Logout", to: session_path(@conn, :delete, @current_user), method: :delete, class: "link dib mr3 mid-gray" %>
+            </div>
+          <% else %>
+            <div class="w-75 tr">
+              <%= link "Signup", to: user_path(@conn, :new), class: "link dib mr3 mid-gray" %>
+              <%= link "Login", to: session_path(@conn, :new), class: "link dib mr3 mid-gray" %>
+            </div>
+          <% end %>
         </nav>
-        <span class="logo"></span>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
@@ -36,8 +41,8 @@
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
+    </div>
 
-    </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

@@ -48,7 +48,9 @@ defmodule BudgetSimpleWeb.AccountController do
   def show(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"plan_id" => plan_id, "id" => id}) do
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, String.to_integer(plan_id)) do
       account = Budgets.get_account!(id)
-      render(conn, "show.html", account: account)
+      transactions = Budgets.list_transactions(id)
+
+      render(conn, "show.html", account: account, plan_id: plan_id, transactions: transactions)
     else
       _ ->
         render(conn, BudgetSimpleWeb.ErrorView, "403.json", %{})

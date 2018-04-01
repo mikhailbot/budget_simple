@@ -26,16 +26,18 @@ defmodule BudgetSimpleWeb.PlanController do
   def index(conn, _) do
     with user = conn.assigns.current_user do
       user = Accounts.get_user_plans!(user.id)
-      plans = user.plans ++ user.shared_plans
 
-      render(conn, "index.html", %{plans: plans})
+      render(conn, "index.html", plans: user.plans, shared_plans: user.shared_plans)
     end
   end
 
   def show(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"id" => id}) do
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, String.to_integer(id)) do
       plan = Budgets.get_plan!(id)
-      render(conn, "show.html", plan: plan)
+      accounts = Budgets.list_accounts(id)
+      categories = Budgets.list_categories(id)
+
+      render(conn, "show.html", plan: plan, accounts: accounts, categories: categories)
     else
       _ ->
         render(conn, BudgetSimpleWeb.ErrorView, "403.json", %{})

@@ -112,9 +112,19 @@ defmodule BudgetSimple.Budgets do
     Account.changeset(account, %{})
   end
 
+  def list_accounts(plan_id) do
+    Account
+    |> where([a], a.plan_id == ^plan_id)
+    |> order_by(asc: :name)
+    |> Repo.all
+  end
+
   def list_transactions(account_id) do
-    from(t in Transaction, where: t.account_id == ^account_id)
-    |> Repo.all()
+    Transaction
+    |> where([t], t.account_id == ^account_id)
+    |> order_by(desc: :date)
+    |> preload(:category)
+    |> Repo.all
   end
 
   def create_transaction(%User{} = user, %Account{} = account, attrs \\ %{}) do

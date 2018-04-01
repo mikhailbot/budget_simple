@@ -1,3 +1,27 @@
-<h2>Show Plan: <%= @plan.name %></h2>
+<div class="mt5">
+  <h1><%= @plan.name %></h1>
 
-<span><%= link "Back", to: plan_path(@conn, :index) %></span>
+  <div class="mv3">
+    <h2>Accounts</h2>
+
+    <ul>
+      <%= for account <- @accounts do %>
+        <li><%= link account.name, to: plan_account_path(@conn, :show, @plan, account) %></li>
+      <% end %>
+    </ul>
+    <%= link "Add New Account", to: plan_account_path(@conn, :new, @plan) %>
+  </div>
+
+  <div class="mv3">
+    <h2>Budget Categories</h2>
+
+    <ul>
+      <%= for category <- @categories do %>
+        <li><%= category.name %></li>
+      <% end %>
+    </ul>
+    <%= link "Add New Category", to: plan_category_path(@conn, :new, @plan) %>
+  </div>
+
+  <%= link "Back", to: plan_path(@conn, :index) %>
+</div>
