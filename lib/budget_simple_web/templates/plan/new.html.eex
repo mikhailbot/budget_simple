@@ -1,21 +1,26 @@
-<h2>New Plan</h2>
+<div class="mt3 mh3">
+  <h2 class="dib blue f2 mt0-ns mb1">Start a new Budget</h2>
 
-<%= form_for @changeset, plan_path(@conn, :create), fn f -> %>
-  <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Please check the errors below.</p>
+  <div class="bg-white br3 mv3 pt1-ns">
+    <div class="pv3 ph3 near-black">
+      <%= form_for @changeset, plan_path(@conn, :create), fn f -> %>
+        <%= if @changeset.action do %>
+          <div class="alert alert-danger">
+            <p>Please check the errors below.</p>
+          </div>
+        <% end %>
+
+        <div class="pb2">
+          <%= label f, :name, "Your budget's awesome name:", class: "dib f4 b pb3" %>
+          <%= text_input f, :name, class: "bl-0 bt-0 br-0 bb bw2 b--blue pv1 f4 outline-0", autofocus: true %>
+          <%= error_tag f, :name %>
+        </div>
+
+        <div class="pv2">
+          <%= submit "Create Budget", class: "bg-green white pv2 ph3 bn br2 mr2 pointer" %>
+          <span data-modal-close class="bg-near-white light-red pv2 ph3 bn br2 pointer">Cancel</span>
+        </div>
+      <% end %>
     </div>
-  <% end %>
-
-  <div class="form-group">
-    <%= label f, :name, class: "control-label" %>
-    <%= text_input f, :name, class: "form-control" %>
-    <%= error_tag f, :name %>
   </div>
-
-  <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
-  </div>
-<% end %>
-
-<span><%= link "Back", to: plan_path(@conn, :index) %></span>
+</div>

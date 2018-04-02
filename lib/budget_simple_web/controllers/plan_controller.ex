@@ -29,8 +29,9 @@ defmodule BudgetSimpleWeb.PlanController do
   def index(conn, _) do
     with user = conn.assigns.current_user do
       user = Accounts.get_user_plans!(user.id)
+      changeset = Budgets.change_plan(%Budgets.Plan{})
 
-      render(conn, "index.html", plans: user.plans, shared_plans: user.shared_plans)
+      render(conn, "index.html", plans: user.plans, shared_plans: user.shared_plans, new_plan: changeset)
     end
   end
 

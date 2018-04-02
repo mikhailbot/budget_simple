@@ -25,11 +25,15 @@
           </div>
         </a>
       <% end %>
-      <a class="ph3 pv3 mt4 link flex align-center justify-between dark-gray card-dim" href="<%= plan_path(@conn, :new) %>">
+      <a class="ph3 pv3 mt4 link flex align-center justify-between dark-gray card-dim" href="#create_plan" data-modal-open>
           <div class="f3 b green">
             Start new budget
           </div>
         </a>
     </div>
   </div>
+</div>
+
+<div id="create_plan" class="modal-hider" style="display: none;">
+  <%= render BudgetSimpleWeb.PlanView, "new.html", conn: @conn, changeset: @new_plan %>
 </div>
