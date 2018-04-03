@@ -5,7 +5,13 @@
     <div class="pb4 ph3">
 
       <div class="mb5">
-        <h3 class="f3 b pt0-ns pt3 mt0 mb2">Recent Transactions</h3>
+        <div class="flex items-center justify-between">
+          <h3 class="f3 b pt0-ns pt3 mt0 mb2">Recent Transactions</h3>
+          <a href="<%= plan_transaction_path(@conn, :new, @plan) %>" class="bg-green near-white b pv2 ph5 ma2-ns bn br2 db-ns dn tc pointer link">
+            <span class="dib w1 h1 mr2 v-mid"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M11 9V5H9v4H5v2h4v4h2v-4h4V9h-4zm-1 11a10 10 0 1 1 0-20 10 10 0 0 1 0 20z" fill="#fff"/></svg></span>
+            <span class="v-mid">Add Transactions</span>
+          </a>
+        </div>
         <div class="flex justify-between items-center flex-wrap">
           <div class="w-50-ns w-100">
             <div class="bg-near-white pa3 mb2 mv2-ns mh2-ns ml0 bn br3 flex justify-between items-center">
@@ -14,14 +20,20 @@
               </div>
             </div>
           </div>
-          <div class="w-50-ns w-100">
-            <a href="<%= plan_transaction_path(@conn, :new, @plan) %>" class="bg-near-white green b pv3 ph5 ma2-ns bn br2 db tc pointer link">Add Transactions</a>
+          <div class="w-50-ns w-100 db dn-ns">
+            <a href="<%= plan_transaction_path(@conn, :new, @plan) %>" class="bg-green near-white b pv3 ph5 ma2-ns bn br2 db tc pointer link">
+              <span class="dib w1 h1 mr2 v-mid"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M11 9V5H9v4H5v2h4v4h2v-4h4V9h-4zm-1 11a10 10 0 1 1 0-20 10 10 0 0 1 0 20z" fill="#fff"/></svg></span>
+              Add Transactions
+            </a>
           </div>
         </div>
       </div>
 
       <div class="mb5">
-        <h3 class="f3 b mb2">Budget Categories</h3>
+        <div class="flex items-center justify-between">
+          <h3 class="f3 b mb2">Budget Categories</h3>
+          <a href="<%= plan_category_path(@conn, :new, @plan) %>" class="silver db-ns dn tc pointer link mt3">Create Categories</a>
+        </div>
         <div class="flex justify-between items-center flex-wrap">
           <%= for category <- @categories do %>
             <div class="w-50-ns w-100">
@@ -37,7 +49,7 @@
               </div>
             </div>
           <% end %>
-          <div class="w-50-ns w-100">
+          <div class="w-50-ns w-100 db dn-ns">
             <a href="<%= plan_category_path(@conn, :new, @plan) %>" class="bg-near-white green b pv3 ph5 ma2-ns bn br2 db tc pointer link">Create New Category</a>
           </div>
         </div>
@@ -45,7 +57,10 @@
 
 
       <div class="mb5">
-        <h3 class="f3 b mb2">Bank Accounts</h3>
+        <div class="flex items-center justify-between">
+          <h3 class="f3 b mb2">Bank Accounts</h3>
+          <a href="<%= plan_account_path(@conn, :new, @plan) %>" class="silver db-ns dn tc pointer link mt3">Create Account</a>
+        </div>
         <div class="flex justify-between items-center flex-wrap">
           <%= for account <- @accounts do %>
             <div class="w-50-ns w-100">
@@ -56,7 +71,7 @@
               </div>
             </div>
           <% end %>
-          <div class="w-50-ns w-100">
+          <div class="w-50-ns w-100 db dn-ns">
             <a href="<%= plan_account_path(@conn, :new, @plan) %>" class="bg-near-white green b pv3 ph5 ma2-ns bn br2 db tc pointer link">Create New Account</a>
           </div>
         </div>
