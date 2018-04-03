@@ -4,6 +4,7 @@ defmodule BudgetSimple.Repo.Migrations.CreateTransactions do
   def change do
     create table(:transactions) do
       add :date, :date
+      add :merchant, :string
       add :inflow, :integer
       add :outflow, :integer
       add :user_id, references(:users, on_delete: :nothing)
