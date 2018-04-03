@@ -13,13 +13,13 @@
 
         <div class="pv3">
           <%= label f , :date, "Transaction date", class: "db f4 b mb2" %>
-          <%= date_input f, :date, class: "bl-0 bt-0 br-0 bb bw2 b--blue pv1 outline-0" %>
+          <%= date_input f, :date, class: "bg-near-white bn pv2 ph3 br2 dark-gray outline-0" %>
           <%= error_tag f, :date %>
         </div>
 
         <div class="pv3">
           <%= label f, :merchant, class: "db f4 b mb2" %>
-          <%= text_input f, :merchant, class: "bl-0 bt-0 br-0 bb bw2 b--blue pv1 outline-0" %>
+          <%= text_input f, :merchant, class: "bg-near-white bn pv2 ph3 br2 dark-gray outline-0" %>
           <%= error_tag f, :merchant %>
         </div>
 
@@ -36,14 +36,14 @@
         </div>
 
         <div class="pv3">
-          <%= label f, :outflow, class: "db f4 b mb2" %>
-          <%= number_input f, :outflow, class: "bl-0 bt-0 br-0 bb bw2 b--blue pv1 outline-0" %>
+          <%= label f, :outflow, "Outflow (cents)", class: "db f4 b mb2" %>
+          <%= number_input f, :outflow, min: "0.01", step: "0.01", class: "bg-near-white bn pv2 ph3 br2 dark-gray outline-0" %>
           <%= error_tag f, :outflow %>
         </div>
 
         <div class="pv3">
-          <%= label f, :inflow,  class: "db f4 b mb2" %>
-          <%= number_input f, :inflow, class: "bl-0 bt-0 br-0 bb bw2 b--blue pv1 outline-0" %>
+          <%= label f, :inflow,  "Inflow (cents)", class: "db f4 b mb2" %>
+          <%= number_input f, :inflow, min: "0.01", step: "0.01", class: "bg-near-white bn pv2 ph3 br2 dark-gray outline-0" %>
           <%= error_tag f, :inflow %>
         </div>
 
