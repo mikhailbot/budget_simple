@@ -127,11 +127,10 @@ defmodule BudgetSimple.Budgets do
     |> Repo.all
   end
 
-  def create_transaction(%User{} = user, %Account{} = account, attrs \\ %{}) do
+  def create_transaction(%User{} = user, attrs \\ %{}) do
     %Transaction{}
     |> Transaction.create_changeset(attrs)
     |> Ecto.Changeset.put_change(:user_id, user.id)
-    |> Ecto.Changeset.put_change(:account_id, account.id)
     |> Repo.insert()
   end
 

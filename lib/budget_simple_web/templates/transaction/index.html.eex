@@ -12,7 +12,7 @@
       <td><%= transaction.outflow %></td>
       <td><%= transaction.inflow %></td>
       <td class="text-right">
-        <span><%= link "Show", to: plan_account_transaction_path(@conn, :show, @plan, @account, transaction), class: "btn btn-default btn-xs"%></span>
+        <span><%= link "Show", to: plan_transaction_path(@conn, :show, @plan, transaction), class: "btn btn-default btn-xs"%></span>
       </td>
     </tr>
 <% end %>

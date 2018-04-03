@@ -16,7 +16,7 @@
   <body class="bg-near-white sans-serif">
     <div class="bg-blue h4-5 h5-ns">
       <header class="mw7 center pt4 pt5-ns">
-        <nav class="mw-inherit w-100 blue tc white relative fixed flex-ns items-center justify-between">
+        <nav class="mw-inherit w-100 blue tc white relative flex-ns items-center justify-between">
           <div class="ml3 tl">
             <a href="/" class="blue b link bg-white br-100 pa2 ba bw2 b-solid b-white f2 h3 w3 dib tc">B</a>
           </div>

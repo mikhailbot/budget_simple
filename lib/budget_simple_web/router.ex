@@ -19,10 +19,8 @@ defmodule BudgetSimpleWeb.Router do
 
     resources "/plans", PlanController, only: [:show, :create, :new, :index] do
       resources "/categories", CategoryController, only: [:new, :create, :show]
-
-      resources "/accounts", AccountController, only: [:new, :create, :show] do
-        resources "/transactions", TransactionController, only: [:new, :create, :show, :index]
-      end
+      resources "/accounts", AccountController, only: [:new, :create, :show]
+      resources "/transactions", TransactionController, only: [:new, :create, :show, :index]
     end
   end
 

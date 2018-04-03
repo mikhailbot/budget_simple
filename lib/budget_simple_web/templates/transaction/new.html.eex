@@ -1,44 +1,56 @@
-<h2>New Transaction</h2>
+<div class="mt3 mh3">
+  <h2 class="dib white f2 mt0-ns mb3">New Transaction</h2>
 
-<%= form_for @changeset, plan_account_transaction_path(@conn, :create, @plan, @account), fn f -> %>
-  <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Please check the errors below.</p>
+  <div class="bg-white br3 mv3 pt3-ns dark-gray">
+    <div class="pb4 ph3">
+
+      <%= form_for @changeset, plan_transaction_path(@conn, :create, @plan), fn f -> %>
+        <%= if @changeset.action do %>
+          <div class="alert alert-danger">
+            <p>Please check the errors below.</p>
+          </div>
+        <% end %>
+
+        <div class="pv3">
+          <%= label f , :date, "Transaction date", class: "db f4 b mb2" %>
+          <%= date_input f, :date, class: "bl-0 bt-0 br-0 bb bw2 b--blue pv1 outline-0" %>
+          <%= error_tag f, :date %>
+        </div>
+
+        <div class="pv3">
+          <%= label f, :merchant, class: "db f4 b mb2" %>
+          <%= text_input f, :merchant, class: "bl-0 bt-0 br-0 bb bw2 b--blue pv1 outline-0" %>
+          <%= error_tag f, :merchant %>
+        </div>
+
+        <div class="pv3">
+          <%= label f, :category_id, class: "db f4 b mb3" %>
+          <%= select f, :category_id, Enum.map(@categories, &{&1.name, &1.id}) %>
+          <%= error_tag f, :category_id %>
+        </div>
+
+        <div class="pv3">
+        <%= label f, :account_id, class: "db f4 b mb3" %>
+          <%= select f, :account_id, Enum.map(@accounts, &{&1.name, &1.id}) %>
+          <%= error_tag f, :account_id %>
+        </div>
+
+        <div class="pv3">
+          <%= label f, :outflow, class: "db f4 b mb2" %>
+          <%= number_input f, :outflow, class: "bl-0 bt-0 br-0 bb bw2 b--blue pv1 outline-0" %>
+          <%= error_tag f, :outflow %>
+        </div>
+
+        <div class="pv3">
+          <%= label f, :inflow,  class: "db f4 b mb2" %>
+          <%= number_input f, :inflow, class: "bl-0 bt-0 br-0 bb bw2 b--blue pv1 outline-0" %>
+          <%= error_tag f, :inflow %>
+        </div>
+
+        <div class="pv3">
+          <%= submit "Add Transaction", class: "bg-near-white green b pv3 ph5 ma2-ns bn br2 db tc pointer link" %>
+        </div>
+      <% end %>
     </div>
-  <% end %>
-
-  <div>
-    <%= label f, :date %>
-    <%= date_input f, :date %>
-    <%= error_tag f, :date %>
   </div>
-
-  <div>
-    <%= label f, :merchant %>
-    <%= text_input f, :merchant %>
-    <%= error_tag f, :merchant %>
-  </div>
-
-  <div>
-    <%= select f, :category_id, Enum.map(@categories, &{&1.name, &1.id}) %>
-    <%= error_tag f, :category_id %>
-  </div>
-
-  <div>
-    <%= label f, :outflow %>
-    <%= number_input f, :outflow %>
-    <%= error_tag f, :outflow %>
-  </div>
-
-  <div>
-    <%= label f, :inflow %>
-    <%= number_input f, :inflow %>
-    <%= error_tag f, :inflow %>
-  </div>
-
-  <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
-  </div>
-<% end %>
-
-<span><%= link "Back", to: plan_path(@conn, :index) %></span>
+</div>

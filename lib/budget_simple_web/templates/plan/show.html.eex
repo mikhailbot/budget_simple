@@ -1,27 +1,66 @@
-<div class="mt5">
-  <h1><%= @plan.name %></h1>
+<div class="mt3 mh3">
+  <h2 class="dib white f2 mt0-ns mb3"><%= @plan.name %></h2>
 
-  <div class="mv3">
-    <h2>Accounts</h2>
+  <div class="bg-white br3 mv3 pt3-ns dark-gray">
+    <div class="pb4 ph3">
 
-    <ul>
-      <%= for account <- @accounts do %>
-        <li><%= link account.name, to: plan_account_path(@conn, :show, @plan, account) %></li>
-      <% end %>
-    </ul>
-    <%= link "Add New Account", to: plan_account_path(@conn, :new, @plan) %>
+      <div class="mb5">
+        <h3 class="f3 b pt0-ns pt3 mt0 mb2">Recent Transactions</h3>
+        <div class="flex justify-between items-center flex-wrap">
+          <div class="w-50-ns w-100">
+            <div class="bg-near-white pa3 mb2 mv2-ns mh2-ns ml0 bn br3 flex justify-between items-center">
+              <div class="">
+                <div class="f6 silver">No transactions to show for now.</div>
+              </div>
+            </div>
+          </div>
+          <div class="w-50-ns w-100">
+            <a href="<%= plan_transaction_path(@conn, :new, @plan) %>" class="bg-near-white green b pv3 ph5 ma2-ns bn br2 db tc pointer link">Add Transactions</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb5">
+        <h3 class="f3 b mb2">Budget Categories</h3>
+        <div class="flex justify-between items-center flex-wrap">
+          <%= for category <- @categories do %>
+            <div class="w-50-ns w-100">
+              <div class="bg-near-white pa3 mb2 mv2-ns mh2-ns ml0 bn br3 flex justify-between items-center">
+                <div class="">
+                  <div class="f4 b"><%= category.name %></div>
+                  <div class="f6 silver">Budgeted: $0</div>
+                  <div class="f6 silver">Spent: $0</div>
+                </div>
+                <div class="f3 green b">
+                  $0
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <div class="w-50-ns w-100">
+            <a href="<%= plan_category_path(@conn, :new, @plan) %>" class="bg-near-white green b pv3 ph5 ma2-ns bn br2 db tc pointer link">Create New Category</a>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="mb5">
+        <h3 class="f3 b mb2">Bank Accounts</h3>
+        <div class="flex justify-between items-center flex-wrap">
+          <%= for account <- @accounts do %>
+            <div class="w-50-ns w-100">
+              <div class="bg-near-white pa3 mb2 mv2-ns mh2-ns ml0 bn br3 flex justify-between items-center">
+                <div class="">
+                  <div class="f4 b"><%= account.name %></div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <div class="w-50-ns w-100">
+            <a href="<%= plan_account_path(@conn, :new, @plan) %>" class="bg-near-white green b pv3 ph5 ma2-ns bn br2 db tc pointer link">Create New Account</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="mv3">
-    <h2>Budget Categories</h2>
-
-    <ul>
-      <%= for category <- @categories do %>
-        <li><%= category.name %></li>
-      <% end %>
-    </ul>
-    <%= link "Add New Category", to: plan_category_path(@conn, :new, @plan) %>
-  </div>
-
-  <%= link "Back", to: plan_path(@conn, :index) %>
 </div>

@@ -1,6 +1,6 @@
 <div class="mt5">
   <h1><%= @account.name %></h1>
-  <%= link "Add Transaction", to: plan_account_transaction_path(@conn, :new, @plan_id, @account) %>
+  <%= link "Add Transaction", to: plan_account_path(@conn, :new, @plan_id) %>
 
   <ul>
     <%= for transaction <- @transactions do %>

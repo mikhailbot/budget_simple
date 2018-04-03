@@ -2,7 +2,7 @@
   <h2 class="dib white f2 mt0-ns mb3">Your Budgets</h2>
 
   <div class="bg-white br3 mv3 pt3-ns">
-    <div class="pb4 cb">
+    <div class="pb4">
       <%= for plan <- @plans do %>
         <a class="ph3 pv3 link flex items-center justify-between dark-gray card-dim" href="<%= plan_path(@conn, :show, plan) %>">
           <div>

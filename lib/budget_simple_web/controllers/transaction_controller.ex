@@ -19,17 +19,17 @@ defmodule BudgetSimpleWeb.TransactionController do
     end
   end
 
-  def new(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"plan_id" => plan_id, "account_id" => account_id}) do
+  def new(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"plan_id" => plan_id}) do
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, String.to_integer(plan_id)) do
       changeset =
-        %Transaction{account_id: account_id}
+        %Transaction{}
         |> Budgets.change_transaction
 
       plan = Budgets.get_plan!(plan_id)
-      account = Budgets.get_account!(account_id)
+      accounts = Budgets.list_accounts(plan_id)
       categories = Budgets.list_categories(plan_id)
 
-      render(conn, "new.html", changeset: changeset, plan: plan, account: account, categories: categories)
+      render(conn, "new.html", changeset: changeset, plan: plan, accounts: accounts, categories: categories)
     else
       _ ->
         conn
@@ -38,19 +38,19 @@ defmodule BudgetSimpleWeb.TransactionController do
     end
   end
 
-  def create(conn, %{"transaction" => transaction_params, "plan_id" => plan_id, "account_id" => account_id,}) do
+  def create(conn, %{"transaction" => transaction_params, "plan_id" => plan_id}) do
     user = conn.assigns.current_user
-    account = Budgets.get_account!(String.to_integer(account_id))
 
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, String.to_integer(plan_id)) do
-      with {:ok, transaction} <- Budgets.create_transaction(user, account, transaction_params) do
+      with {:ok, transaction} <- Budgets.create_transaction(user, transaction_params) do
         render(conn, "show.html", transaction: transaction)
       else
         {:error, %Ecto.Changeset{} = changeset} ->
           plan = Budgets.get_plan!(plan_id)
+          accounts = Budgets.list_accounts(plan_id)
           categories = Budgets.list_categories(plan_id)
 
-          render(conn, "new.html", changeset: changeset, plan: plan, account: account, categories: categories)
+          render(conn, "new.html", changeset: changeset, plan: plan, accounts: accounts, categories: categories)
       end
     end
   end
