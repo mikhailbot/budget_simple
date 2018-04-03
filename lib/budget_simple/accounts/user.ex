@@ -1,56 +1,63 @@
 defmodule BudgetSimple.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias BudgetSimple.Accounts.User
 
   schema "users" do
-    field :email, :string
-    field :password_hash, :string
     field :first_name, :string
+    field :email, :string
     field :password, :string, virtual: true
-
-    has_many :plans, BudgetSimple.Budgets.Plan
-    has_many :accounts, BudgetSimple.Budgets.Account
-    many_to_many :shared_plans, BudgetSimple.Budgets.Plan, join_through: "shares"
+    field :password_hash, :string
 
     timestamps()
   end
 
-  @doc false
-  def changeset(user, attrs) do
+  def changeset(%User{} = user, attrs) do
+    user
+    |> cast(attrs, [:email, :first_name])
+    |> validate_required([:email, :first_name])
+    |> unique_email
+  end
+
+  def create_changeset(%User{} = user, attrs) do
     user
     |> cast(attrs, [:first_name, :email, :password])
     |> validate_required([:first_name, :email, :password])
-  end
-
-  @doc false
-  def create_changeset(user, attrs) do
-    user
-    |> changeset(attrs)
+    |> unique_email
     |> validate_password(:password)
-    |> put_pass_hash()
+    |> put_pass_hash
   end
 
-  @doc false
-  def validate_password(changeset, field, options \\ []) do
+  defp unique_email(changeset) do
+    validate_format(changeset, :email, ~r/@/)
+    |> validate_length(:email, max: 254)
+    |> unique_constraint(:email)
+  end
+
+  # In the function below, strong_password? just checks that the password
+  # is at least 8 characters long.
+  # See the documentation for NotQwerty123.PasswordStrength.strong_password?
+  # for a more comprehensive password strength checker.
+  defp validate_password(changeset, field, options \\ []) do
     validate_change(changeset, field, fn _, password ->
-      case valid_password?(password) do
+      case strong_password?(password) do
         {:ok, _} -> []
         {:error, msg} -> [{field, options[:message] || msg}]
       end
     end)
   end
 
-  @doc false
-  defp valid_password?(password) when byte_size(password) > 7 do
-    {:ok, password}
-  end
-  defp valid_password?(_), do: {:error, "The password is too short"}
-
-  @doc false
+  # If you are using Argon2 or Pbkdf2, change Bcrypt to Argon2 or Pbkdf2
   defp put_pass_hash(%Ecto.Changeset{valid?: true, changes:
-    %{password: password}} = changeset) do
+      %{password: password}} = changeset) do
     change(changeset, Comeonin.Argon2.add_hash(password))
   end
+
   defp put_pass_hash(changeset), do: changeset
 
+  defp strong_password?(password) when byte_size(password) > 7 do
+    {:ok, password}
+  end
+
+  defp strong_password?(_), do: {:error, "The password is too short"}
 end
