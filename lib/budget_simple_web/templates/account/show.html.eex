@@ -1,11 +1,46 @@
-<div class="mt5">
-  <h1><%= @account.name %></h1>
-  <%= link "Add Transaction", to: plan_account_path(@conn, :new, @plan_id) %>
+<div class="mt3 mh3">
+  <h2 class="dib white f2 mt0-ns mb3"><%= @account.name %></h2>
 
-  <ul>
-    <%= for transaction <- @transactions do %>
-      <li><%= transaction.date %> - <%= transaction.merchant %> - <%= transaction.outflow %> - <%= transaction.inflow %> - <%= transaction.category.name %></li>
-    <% end %>
-  </ul>
-  <span><%= link "Back", to: plan_path(@conn, :show, @plan_id) %></span>
+  <div class="bg-white br3 mv3 pt3-ns dark-gray">
+    <div class="pb4 ph3">
+
+      <div class="mb5">
+        <div class="flex items-center justify-between">
+          <h3 class="f3 b pt0-ns pt3 mt0 mb2">Transactions</h3>
+          <a href="<%= plan_transaction_path(@conn, :new, @plan_id) %>" class="bg-green near-white b pv2 ph5 ma2-ns bn br2 db-ns dn tc pointer link">
+            <span class="dib w1 h1 mr2 v-mid"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M11 9V5H9v4H5v2h4v4h2v-4h4V9h-4zm-1 11a10 10 0 1 1 0-20 10 10 0 0 1 0 20z" fill="#fff"/></svg></span>
+            <span class="v-mid">Add Transactions</span>
+          </a>
+        </div>
+        <div class="flex justify-between items-center flex-wrap">
+          <div class="w-50-ns w-100 db dn-ns mb3">
+            <a href="<%= plan_transaction_path(@conn, :new, @plan_id) %>" class="bg-green near-white b pv3 ph5 ma2-ns bn br2 db tc pointer link">
+              <span class="dib w1 h1 mr2 v-mid"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M11 9V5H9v4H5v2h4v4h2v-4h4V9h-4zm-1 11a10 10 0 1 1 0-20 10 10 0 0 1 0 20z" fill="#fff"/></svg></span>
+              Add Transactions
+            </a>
+          </div>
+          <%= for transaction <- @transactions do %>
+            <div class="w-50-ns w-100">
+              <div class="bg-near-white pa3 mb2 mv2-ns mh2-ns ml0 bn br3 flex justify-between items-center">
+                <div class="">
+                  <div class="f4 b"><%= transaction.merchant %></div>
+                  <div class="f6 silver">Date: <%= transaction.date %></div>
+                  <div class="f6 silver">Category: <%= transaction.category.name %></div>
+                </div>
+                <%= if transaction.outflow do %>
+                  <div class="f3 red b">
+                    $<%= transaction.outflow %>
+                  </div>
+                <%= end %>
+                <%= if transaction.inflow do %>
+                  <div class="f3 green b">
+                    $<%= transaction.inflow %>
+                  </div>
+                <%= end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+  </div>
 </div>

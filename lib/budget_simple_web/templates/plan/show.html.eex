@@ -61,15 +61,16 @@
           <h3 class="f3 b mb2">Bank Accounts</h3>
           <a href="<%= plan_account_path(@conn, :new, @plan) %>" class="silver db-ns dn tc pointer link mt3">Create Account</a>
         </div>
+        <div class="silver mb3">Choose an account below to view its transactions</div>
         <div class="flex justify-between items-center flex-wrap">
           <%= for account <- @accounts do %>
-            <div class="w-50-ns w-100">
+            <a class="w-50-ns w-100 db link dark-gray" href="<%= plan_account_path(@conn, :show, @plan, account) %>">
               <div class="bg-near-white pa3 mb2 mv2-ns mh2-ns ml0 bn br3 flex justify-between items-center">
                 <div class="">
                   <div class="f4 b"><%= account.name %></div>
                 </div>
               </div>
-            </div>
+            </a>
           <% end %>
           <div class="w-50-ns w-100 db dn-ns">
             <a href="<%= plan_account_path(@conn, :new, @plan) %>" class="bg-near-white green b pv3 ph5 ma2-ns bn br2 db tc pointer link">Create New Account</a>
