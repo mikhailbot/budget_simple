@@ -11,6 +11,7 @@ defmodule BudgetSimpleWeb.Router do
 
     post "/sessions", SessionController, :create
     resources "/users", UserController, only: [:show]
+    resources "/plans", PlanController, only: [:index, :create]
   end
 
 end
