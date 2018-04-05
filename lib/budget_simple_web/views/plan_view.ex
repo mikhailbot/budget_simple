@@ -15,6 +15,8 @@ defmodule BudgetSimpleWeb.PlanView do
 
   def render("plan.json", %{plan: plan}) do
     %{id: plan.id,
-      name: plan.name}
+      name: plan.name,
+      owner_id: plan.user.id
+    }
   end
 end

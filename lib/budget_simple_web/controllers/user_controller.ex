@@ -11,9 +11,8 @@ defmodule BudgetSimpleWeb.UserController do
   plug :user_check when action in [:index, :show]
   plug :id_check when action in [:update, :delete]
 
-  def index(conn, _) do
-    users = Accounts.list_users()
-    render(conn, "index.json", users: users)
+  def index(%Plug.Conn{assigns: %{current_user: user}} = conn, _) do
+    render(conn, "show.json", user: user)
   end
 
   def create(conn, %{"user" => user_params}) do

@@ -22,6 +22,12 @@ config :phauxth,
   token_salt: "G7XLuMA3",
   endpoint: BudgetSimpleWeb.Endpoint
 
+# CORS
+config :cors_plug,
+  origin: ["*"],
+  max_age: 86400,
+  methods: ["GET", "POST"]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
