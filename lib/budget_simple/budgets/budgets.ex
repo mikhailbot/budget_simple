@@ -14,8 +14,8 @@ defmodule BudgetSimple.Budgets do
   def authorize(:create_share, %Accounts.User{id: user_id}, %Plan{user_id: user_id}), do: true
 
   def authorize(:plan_access, user, plan_id) do
-    user.plans ++ user.shared_plans
-    |> Enum.any?(fn(p) -> p.id == plan_id end)
+    list_user_plans(user.id)
+    |> Enum.any?(fn(p) -> p.id == String.to_integer(plan_id) end)
   end
 
   # Catch-all: deny everything else

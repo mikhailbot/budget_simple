@@ -10,8 +10,8 @@ defmodule BudgetSimpleWeb.Router do
     pipe_through :api
 
     post "/sessions", SessionController, :create
-    resources "/users", UserController, only: [:index, :show]
-    resources "/plans", PlanController, only: [:index, :create]
+    resources "/users", UserController, only: [:index, :show, :create]
+    resources "/plans", PlanController, only: [:index, :create, :show]
   end
 
 end

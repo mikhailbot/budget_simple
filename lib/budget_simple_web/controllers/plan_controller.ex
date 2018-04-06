@@ -7,7 +7,7 @@ defmodule BudgetSimpleWeb.PlanController do
 
   action_fallback BudgetSimpleWeb.FallbackController
 
-  plug :user_check when action in [:index, :create]
+  plug :user_check when action in [:index, :create, :show]
 
   def create(conn, %{"plan" => plan_params}) do
     with {:ok, %Plan{} = plan} <- Budgets.create_plan(conn.assigns.current_user, plan_params) do
@@ -24,6 +24,14 @@ defmodule BudgetSimpleWeb.PlanController do
       conn
       |> put_status(:ok)
       |> render("index.json", %{plans: plans})
+    end
+  end
+
+  def show(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"id" => id}) do
+    with :ok <- Bodyguard.permit(Budgets, :plan_access, user, id) do
+      plan = Budgets.get_plan!(id)
+
+      render(conn, "show.json", plan: plan)
     end
   end
 end

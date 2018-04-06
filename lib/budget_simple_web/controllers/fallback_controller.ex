@@ -19,4 +19,11 @@ defmodule BudgetSimpleWeb.FallbackController do
     |> put_view(BudgetSimpleWeb.ErrorView)
     |> render(:"404")
   end
+
+  def call(conn, {:error, :unauthorized}) do
+    conn
+    |> put_status(:not_found)
+    |> put_view(BudgetSimpleWeb.ErrorView)
+    |> render(:"404")
+  end
 end
