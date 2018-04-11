@@ -13,7 +13,7 @@ defmodule BudgetSimple.Budgets.Category do
   @doc false
   def changeset(category, attrs) do
     category
-    |> cast(attrs, [:name, :plan_id])
-    |> validate_required([:name, :plan_id])
+    |> cast(attrs, [:name])
+    |> validate_required([:name])
   end
 end

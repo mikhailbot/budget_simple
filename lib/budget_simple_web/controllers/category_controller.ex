@@ -5,11 +5,11 @@ defmodule BudgetSimpleWeb.CategoryController do
 
   action_fallback BudgetSimpleWeb.FallbackController
 
-  def create(conn, %{"name" => name, "plan_id" => plan_id}) do
+  def create(conn, %{"category" => category_params, "plan_id" => plan_id}) do
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, plan_id) do
-      with {:ok, category} <- Budgets.create_category(%{name: name, plan_id: plan_id}) do
+      with {:ok, category} <- Budgets.create_category(String.to_integer(plan_id), category_params) do
         conn
         |> put_status(:created)
         |> render("show.json", category: category)

@@ -30,8 +30,9 @@ defmodule BudgetSimpleWeb.PlanController do
   def show(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"id" => id}) do
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, id) do
       plan = Budgets.get_plan!(id)
+      categories = Budgets.list_categories(id)
 
-      render(conn, "show.json", plan: plan)
+      render(conn, "show.json", plan: plan, categories: categories)
     end
   end
 end

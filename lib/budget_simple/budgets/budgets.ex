@@ -82,9 +82,10 @@ defmodule BudgetSimple.Budgets do
     |> Repo.insert()
   end
 
-  def create_category(attrs \\ %{}) do
+  def create_category(plan_id, attrs \\ %{}) do
     %Category{}
     |> Category.changeset(attrs)
+    |> Ecto.Changeset.put_change(:plan_id, plan_id)
     |> Repo.insert()
   end
 
