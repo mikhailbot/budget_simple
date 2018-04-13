@@ -13,4 +13,10 @@ defmodule BudgetSimpleWeb.AccountView do
       type: account.type
     }
   end
+
+  def render("index.json", %{accounts: accounts}) do
+    %{
+      data: render_many(accounts, AccountView, "account.json")
+    }
+  end
 end

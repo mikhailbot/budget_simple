@@ -13,7 +13,7 @@ defmodule BudgetSimpleWeb.AccountController do
       |> Map.put("plan_id", plan_id)
       |> Map.put("user_id", user.id)
 
-    with :ok <- Bodyguard.permit(Budgets, :plan_access, user, plan.id) do
+    with :ok <- Bodyguard.permit(Budgets, :plan_access, user, plan_id) do
       with {:ok, account} <- Budgets.create_account(attrs) do
         conn
         |> put_status(:created)

@@ -31,8 +31,9 @@ defmodule BudgetSimpleWeb.PlanController do
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, id) do
       plan = Budgets.get_plan!(id)
       categories = Budgets.list_categories(id)
+      accounts = Budgets.list_accounts(id)
 
-      render(conn, "show.json", plan: plan, categories: categories)
+      render(conn, "show.json", plan: plan, categories: categories, accounts: accounts)
     end
   end
 end

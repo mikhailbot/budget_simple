@@ -9,7 +9,7 @@ defmodule BudgetSimple.Budgets do
 
   alias BudgetSimple.Accounts
   alias BudgetSimple.Accounts.User
-  alias BudgetSimple.Budgets.{Plan, Share, Category, Account, Transaction}
+  alias BudgetSimple.Budgets.{Plan, Share, Category, Account, Transaction, Allotment}
 
   def authorize(:create_share, %Accounts.User{id: user_id}, %Plan{user_id: user_id}), do: true
 
@@ -100,6 +100,13 @@ defmodule BudgetSimple.Budgets do
     %Account{}
     |> Account.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def list_accounts(plan_id) do
+    Account
+    |> where([a], a.plan_id == ^plan_id)
+    |> order_by(asc: :inserted_at)
+    |> Repo.all
   end
 
   def create_transaction(attrs \\ %{}) do

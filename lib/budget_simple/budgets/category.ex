@@ -6,6 +6,7 @@ defmodule BudgetSimple.Budgets.Category do
   schema "categories" do
     field :name, :string
     belongs_to :plan, BudgetSimple.Budgets.Plan
+    has_many :allotments, BudgetSimple.Budgets.Allotment
 
     timestamps()
   end
