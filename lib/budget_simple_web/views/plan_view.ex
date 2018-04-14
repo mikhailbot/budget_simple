@@ -1,6 +1,6 @@
 defmodule BudgetSimpleWeb.PlanView do
   use BudgetSimpleWeb, :view
-  alias BudgetSimpleWeb.{CategoryView, PlanView, AccountView}
+  alias BudgetSimpleWeb.{CategoryView, PlanView, AccountView, TransactionView}
 
   def render("index.json", %{plans: plans}) do
     %{data: %{
@@ -9,12 +9,12 @@ defmodule BudgetSimpleWeb.PlanView do
     }
   end
 
-  def render("show.json", %{plan: plan, categories: categories, accounts: accounts}) do
+  def render("show.json", %{plan: plan, categories: categories, accounts: accounts, transactions: transactions}) do
     %{data: %{
         plan: render_one(plan, PlanView, "plan.json"),
         categories: CategoryView.render("index.json", %{categories: categories}),
         accounts: AccountView.render("index.json", %{accounts: accounts}),
-        recentTransactions: []
+        transactions: TransactionView.render("index.json", %{transactions: transactions})
       }
     }
   end

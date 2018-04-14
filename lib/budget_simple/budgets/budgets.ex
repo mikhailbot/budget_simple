@@ -115,6 +115,13 @@ defmodule BudgetSimple.Budgets do
     |> Repo.insert()
   end
 
+  def list_transactions(plan_id) do
+    Transaction
+    |> where([t], t.plan_id == ^plan_id)
+    |> order_by(desc: :date)
+    |> Repo.all
+  end
+
   def get_transaction!(id), do: Repo.get!(Transaction, id)
 
   def update_transaction(%Transaction{} = transaction, attrs \\ %{}) do

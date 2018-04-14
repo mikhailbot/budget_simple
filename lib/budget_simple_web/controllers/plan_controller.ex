@@ -32,8 +32,11 @@ defmodule BudgetSimpleWeb.PlanController do
       plan = Budgets.get_plan!(id)
       categories = Budgets.list_categories(id)
       accounts = Budgets.list_accounts(id)
+      transactions = Budgets.list_transactions(id)
 
-      render(conn, "show.json", plan: plan, categories: categories, accounts: accounts)
+      IO.inspect transactions
+
+      render(conn, "show.json", plan: plan, categories: categories, accounts: accounts, transactions: transactions)
     end
   end
 end
