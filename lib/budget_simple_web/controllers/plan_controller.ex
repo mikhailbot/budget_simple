@@ -27,12 +27,12 @@ defmodule BudgetSimpleWeb.PlanController do
     end
   end
 
-  def show(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"id" => id}) do
+  def show(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"id" => id, "month" => month}) do
     with :ok <- Bodyguard.permit(Budgets, :plan_access, user, id) do
       plan = Budgets.get_plan!(id)
       categories = Budgets.list_categories(id)
       accounts = Budgets.list_accounts(id)
-      transactions = Budgets.list_transactions(id)
+      transactions = Budgets.list_transactions_by_month(id, month)
 
       render(conn, "show.json", plan: plan, categories: categories, accounts: accounts, transactions: transactions)
     end

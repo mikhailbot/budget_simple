@@ -122,6 +122,18 @@ defmodule BudgetSimple.Budgets do
     |> Repo.all
   end
 
+  def list_transactions_by_month(plan_id, month) do
+    start_of_month = Timex.parse!(month, "{YYYY}-{0M}-{D}")
+    next_month = Timex.shift(start_of_month, months: 1)
+
+    Transaction
+    |> where([t], t.plan_id == ^plan_id)
+    |> where([t], t.date >= ^start_of_month)
+    |> where([t], t.date < ^next_month)
+    |> order_by(desc: :date)
+    |> Repo.all
+  end
+
   def get_transaction!(id), do: Repo.get!(Transaction, id)
 
   def update_transaction(%Transaction{} = transaction, attrs \\ %{}) do

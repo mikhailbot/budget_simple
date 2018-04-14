@@ -48,6 +48,7 @@ defmodule BudgetSimple.Mixfile do
       {:bodyguard, "~> 2.2"},
       {:faker, "~> 0.10", only: :test},
       {:phauxth, "~> 1.2"},
+      {:timex, "~> 3.1"},
     ]
   end
 
