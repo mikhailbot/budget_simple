@@ -1,0 +1,56 @@
+<div class="mt3 mh3">
+  <h2 class="dib white f2 mt0-ns mb3">New Transaction</h2>
+
+  <div class="bg-white br3 mv3 pt3-ns dark-gray">
+    <div class="pb4 ph3">
+
+      <%= form_for @changeset, plan_transaction_path(@conn, :create, @plan), fn f -> %>
+        <%= if @changeset.action do %>
+          <div class="alert alert-danger">
+            <p>Please check the errors below.</p>
+          </div>
+        <% end %>
+
+        <div class="pv3">
+          <%= label f , :date, "Transaction date", class: "db f4 b mb2" %>
+          <%= date_input f, :date, class: "bg-near-white bn pv2 ph3 br2 dark-gray outline-0 input-reset" %>
+          <%= error_tag f, :date %>
+        </div>
+
+        <div class="pv3">
+          <%= label f, :merchant, class: "db f4 b mb2" %>
+          <%= text_input f, :merchant, class: "bg-near-white bn pv2 ph3 br2 dark-gray outline-0 input-reset w5-ns w-100" %>
+          <%= error_tag f, :merchant %>
+        </div>
+
+        <div class="pv3">
+          <%= label f, :category_id, class: "db f4 b mb3" %>
+          <%= select f, :category_id, Enum.map(@categories, &{&1.name, &1.id}), class: "bg-near-white bn pv2 ph3 br2 dark-gray outline-0 input-reset w5-ns w-100" %>
+          <%= error_tag f, :category_id %>
+        </div>
+
+        <div class="pv3">
+        <%= label f, :account_id, class: "db f4 b mb3" %>
+          <%= select f, :account_id, Enum.map(@accounts, &{&1.name, &1.id}), class: "bg-near-white bn pv2 ph3 br2 dark-gray outline-0 input-reset w5-ns w-100" %>
+          <%= error_tag f, :account_id %>
+        </div>
+
+        <div class="pv3">
+          <%= label f, :outflow, "Outflow (cents)", class: "db f4 b mb2" %>
+          <%= number_input f, :outflow, min: "0.01", step: "0.01", class: "bg-near-white bn pv2 ph3 br2 dark-gray outline-0 input-reset w4-ns w-100" %>
+          <%= error_tag f, :outflow %>
+        </div>
+
+        <div class="pv3">
+          <%= label f, :inflow,  "Inflow (cents)", class: "db f4 b mb2" %>
+          <%= number_input f, :inflow, min: "0.01", step: "0.01", class: "bg-near-white bn pv2 ph3 br2 dark-gray outline-0 input-reset w4-ns w-100" %>
+          <%= error_tag f, :inflow %>
+        </div>
+
+        <div class="pv3">
+          <%= submit "Add Transaction", class: "bg-green near-white  b pv3 ph5 ma2-ns bn br2 db w-100 w-auto-ns tc pointer link db-ns" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

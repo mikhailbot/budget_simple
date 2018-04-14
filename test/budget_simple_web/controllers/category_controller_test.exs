@@ -1,78 +1,53 @@
 defmodule BudgetSimpleWeb.CategoryControllerTest do
   use BudgetSimpleWeb.ConnCase
 
+  import BudgetSimpleWeb.AuthCase
   alias BudgetSimple.Fixtures
 
   @create_attrs %{name: "some name"}
+  @invalid_attrs %{name: nil}
 
-  setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
-  end
-
-  describe "create category" do
-    test "renders category when have permissions", %{conn: conn} do
-      user = Fixtures.User.create()
-      attrs = Map.put(@create_attrs, :user_id, user.id)
-
-      conn = post conn, plan_path(conn, :create), %{plan: attrs, token: user.token}
-      plan_id = json_response(conn, 201)["data"]["id"]
-
-      conn = post build_conn(), category_path(build_conn(), :create), %{plan_id: plan_id, name: "some category name", token: user.token}
-      body = json_response(conn, 201)
-
-      assert body["data"]["id"]
-      assert body["data"]["name"] == "some category name"
-    end
-
-    test "renders error when don't have permissions", %{conn: conn} do
-      first_user = Fixtures.User.create()
-      attrs = Map.put(@create_attrs, :user_id, first_user.id)
-
-      conn = post conn, plan_path(conn, :create), %{plan: attrs, token: first_user.token}
-      plan_id = json_response(conn, 201)["data"]["id"]
-
-      second_user = Fixtures.User.create()
-      conn = post build_conn(), category_path(build_conn(), :create), %{plan_id: plan_id, name: "some category name", token: second_user.token}
-
-      assert json_response(conn, 401)
+  setup %{conn: conn} = config do
+    conn = conn |> bypass_through(BudgetSimpleWeb.Router, [:browser]) |> get("/")
+    if email = config[:login] do
+      user = add_user(email)
+      other = add_user("tony@example.com")
+      conn = conn |> add_phauxth_session(user) |> send_resp(:ok, "/")
+      {:ok, %{conn: conn, user: user, other: other}}
+    else
+      {:ok, %{conn: conn}}
     end
   end
 
-  describe "list categories" do
-    test "renders plan categories when have permissions", %{conn: conn} do
-      user = Fixtures.User.create()
-      attrs = Map.put(@create_attrs, :user_id, user.id)
+  @tag login: "reg@example.com"
+  test "renders form for new category", %{conn: conn, user: user} do
+    plan = Fixtures.Plan.create(user)
 
-      conn = post conn, plan_path(conn, :create), %{plan: attrs, token: user.token}
-      plan_id = json_response(conn, 201)["data"]["id"]
+    conn = get(conn, plan_category_path(conn, :new, plan))
+    assert html_response(conn, 200) =~ "New Category"
+  end
 
-      conn = post build_conn(), category_path(build_conn(), :create), %{plan_id: plan_id, name: "some category name", token: user.token}
-      assert json_response(conn, 201)
+  @tag login: "reg@example.com"
+  test "renders /plans/category error for unauthorized user", %{conn: conn, other: other}  do
+    plan = Fixtures.Plan.create(other)
 
-      conn = post build_conn(), category_path(build_conn(), :create), %{plan_id: plan_id, name: "some other category", token: user.token}
-      assert json_response(conn, 201)
+    conn = get(conn, plan_category_path(conn, :new, plan))
+    assert html_response(conn, 404) =~ "Not Found"
+  end
 
-      conn = get build_conn(), category_path(build_conn(), :index), %{plan_id: plan_id, token: user.token}
-      body = json_response(conn, 200)
+  @tag login: "reg@example.com"
+  test "creates category when valid", %{conn: conn, user: user} do
+    plan = Fixtures.Plan.create(user)
 
-      assert body["data"]["categories"]
-      assert List.first(body["data"]["categories"])["name"] == "some category name"
-      assert List.last(body["data"]["categories"])["name"] == "some other category"
-    end
+    conn = post(conn, plan_category_path(conn, :create, plan, category: @create_attrs))
+    assert html_response(conn, 200) =~ @create_attrs.name
+  end
 
-    test "renders error when don't have permissions", %{conn: conn} do
-      first_user = Fixtures.User.create()
-      second_user = Fixtures.User.create()
-      attrs = Map.put(@create_attrs, :user_id, first_user.id)
+  @tag login: "reg@example.com"
+  test "does not create category when invalid", %{conn: conn, user: user} do
+    plan = Fixtures.Plan.create(user)
 
-      conn = post conn, plan_path(conn, :create), %{plan: attrs, token: first_user.token}
-      plan_id = json_response(conn, 201)["data"]["id"]
-
-      conn = post build_conn(), category_path(build_conn(), :create), %{plan_id: plan_id, name: "some category name", token: first_user.token}
-      assert json_response(conn, 201)
-
-      conn = get build_conn(), category_path(build_conn(), :index), %{plan_id: plan_id, token: second_user.token}
-      assert json_response(conn, 401)
-    end
+    conn = post(conn, plan_category_path(conn, :create, plan, category: @invalid_attrs))
+    assert html_response(conn, 200) =~ "New Category"
   end
 end

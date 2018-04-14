@@ -1,0 +1,39 @@
+<div class="mt3 mh3">
+  <h2 class="dib white f2 mt0-ns mb3">Your Budgets</h2>
+
+  <div class="bg-white br3 mv3 pt3-ns">
+    <div class="pb4">
+      <%= for plan <- @plans do %>
+        <a class="ph3 pv3 link flex items-center justify-between dark-gray card-dim" href="<%= plan_path(@conn, :show, plan) %>">
+          <div>
+            <div class="f3 b"><%= plan.name %></div>
+            <div class="f5 gray">Owned by you</div>
+          </div>
+          <div class="b h2 w2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M20 10a10 10 0 1 1-20 0 10 10 0 0 1 20 0zm-2 0a8 8 0 1 0-16 0 8 8 0 0 0 16 0zm-8 2H5V8h5V5l5 5-5 5v-3z" fill="#CCCCCC"/></svg>
+          </div>
+        </a>
+      <% end %>
+      <%= for plan <- @shared_plans do %>
+        <a class="ph3 pv3 link flex items-center justify-between dark-gray card-dim" href="<%= plan_path(@conn, :show, plan) %>">
+          <div>
+            <div class="f3 b"><%= plan.name %></div>
+            <div class="f5 gray">Shared</div>
+          </div>
+          <div class="b">
+            &gt;
+          </div>
+        </a>
+      <% end %>
+      <a class="ph3 pv3 mt4 link flex items-center justify-between dark-gray card-dim" href="#create_plan" data-modal-open>
+          <div class="f3 b green">
+            Start new budget
+          </div>
+        </a>
+    </div>
+  </div>
+</div>
+
+<div id="create_plan" class="modal-hider" style="display: none;">
+  <%= render BudgetSimpleWeb.PlanView, "new.html", conn: @conn, changeset: @new_plan %>
+</div>

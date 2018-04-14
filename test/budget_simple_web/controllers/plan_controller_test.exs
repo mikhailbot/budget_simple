@@ -1,66 +1,49 @@
 defmodule BudgetSimpleWeb.PlanControllerTest do
   use BudgetSimpleWeb.ConnCase
 
-  alias BudgetSimple.{Budgets, Fixtures}
+  import BudgetSimpleWeb.AuthCase
 
-  @create_attrs %{name: "some name"}
+  @create_attrs %{name: "plan name"}
   @invalid_attrs %{name: nil}
 
-  def fixture(:plan) do
-    {:ok, plan} = Budgets.create_plan(@create_attrs)
-    plan
-  end
 
-  setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
-  end
-
-  describe "create plan" do
-    test "renders plan when data is valid", %{conn: conn} do
-      user = Fixtures.User.create()
-      attrs =
-        @create_attrs
-        |> Map.put(:user_id, user.id)
-
-      conn = post conn, plan_path(conn, :create), %{plan: attrs, token: user.token}
-      body = json_response(conn, 201)
-      assert body["data"]["id"]
-      assert body["data"]["name"]
-    end
-
-    test "renders errors when data is invalid" do
-      user = Fixtures.User.create()
-      attrs =
-        @invalid_attrs
-        |> Map.put(:user_id, user.id)
-
-      conn = post build_conn(), plan_path(build_conn(), :create), %{plan: attrs,  token: user.token}
-      assert json_response(conn, 422)["errors"] != %{}
+  setup %{conn: conn} = config do
+    conn = conn |> bypass_through(BudgetSimpleWeb.Router, [:browser]) |> get("/")
+    if email = config[:login] do
+      user = add_user(email)
+      other = add_user("tony@example.com")
+      conn = conn |> add_phauxth_session(user) |> send_resp(:ok, "/")
+      {:ok, %{conn: conn, user: user, other: other}}
+    else
+      {:ok, %{conn: conn}}
     end
   end
 
-  describe "list plans" do
-    test "renders plans made by the user" do
-      user = Fixtures.User.create()
-      plan = Fixtures.Plan.create(%{user_id: user.id})
+  test "renders form for new plans", %{conn: conn} do
+    conn = get(conn, plan_path(conn, :new))
+    assert html_response(conn, 200) =~ "New Plan"
+  end
 
-      conn = get build_conn(), plan_path(build_conn(), :index), %{token: user.token}
-      body = json_response(conn, 200)
-      assert List.first(body["data"]["plans"])["name"] == plan.name
-      refute List.first(body["data"]["shared_plans"])
-    end
+  @tag login: "reg@example.com"
+  test "lists all entries on index", %{conn: conn} do
+    conn = get(conn, plan_path(conn, :index))
+    assert html_response(conn, 200) =~ "Your Budget Plans"
+  end
 
-    test "renders plans shared to the user" do
-      first_user = Fixtures.User.create()
-      second_user = Fixtures.User.create()
-      plan = Fixtures.Plan.create(%{user_id: first_user.id})
+  test "renders /plans error for unauthorized user", %{conn: conn}  do
+    conn = get(conn, plan_path(conn, :index))
+    assert redirected_to(conn) == session_path(conn, :new)
+  end
 
-      assert post build_conn(), share_path(build_conn(), :create), %{plan_id: plan.id, user_to_share: second_user.id, token: first_user.token}
+  @tag login: "reg@example.com"
+  test "creates plan when data is valid", %{conn: conn} do
+    conn = post(conn, plan_path(conn, :create), plan: @create_attrs)
+    assert html_response(conn, 200) =~ @create_attrs.name
+  end
 
-      conn = get build_conn(), plan_path(build_conn(), :index), %{token: second_user.token}
-      body = json_response(conn, 200)
-      assert List.first(body["data"]["shared_plans"])["name"] == plan.name
-      refute List.first(body["data"]["plans"])
-    end
+  @tag login: "reg@example.com"
+  test "does not create plan when data is invalid", %{conn: conn} do
+    conn = post(conn, plan_path(conn, :create), plan: @invalid_attrs)
+    assert html_response(conn, 200) =~ "New Plan"
   end
 end
