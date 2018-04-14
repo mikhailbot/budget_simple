@@ -20,7 +20,8 @@ defmodule BudgetSimpleWeb.TransactionView do
       outflow: transaction.outflow,
       category_id: transaction.category_id,
       plan_id: transaction.plan_id,
-      account_id: transaction.account_id
+      account_id: transaction.account_id,
+      merchant: transaction.merchant
     }
   end
 end
