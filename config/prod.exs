@@ -24,10 +24,7 @@ config :logger, level: :info
 
 config :budget_simple, BudgetSimple.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: System.get_env("DATA_DB_USER"),
-  password: System.get_env("DATA_DB_PASS"),
-  hostname: System.get_env("DATA_DB_HOST"),
-  database: "budget_simple_prod",
+  url: System.get_env("DATABASE_URL"),
   pool_size: 10
 
 # ## SSL Support
