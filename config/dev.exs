@@ -53,5 +53,5 @@ config :budget_simple, BudgetSimple.Repo,
   username: System.get_env("DATA_DB_USER"),
   password: System.get_env("DATA_DB_PASS"),
   hostname: System.get_env("DATA_DB_HOST"),
-  database: "gonano",
+  database: "budget_simple",
   pool_size: 10

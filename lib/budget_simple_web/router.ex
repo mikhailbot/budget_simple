@@ -9,6 +9,7 @@ defmodule BudgetSimpleWeb.Router do
   scope "/api", BudgetSimpleWeb do
     pipe_through :api
 
+    post "/share", ShareController, :create
     post "/sessions", SessionController, :create
     resources "/users", UserController, only: [:index, :show, :create]
     resources "/plans", PlanController, only: [:index, :create, :show] do

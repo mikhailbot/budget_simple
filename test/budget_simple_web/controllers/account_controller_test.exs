@@ -15,7 +15,7 @@ defmodule BudgetSimpleWeb.AccountControllerTest do
       user = Fixtures.User.create()
       plan = Fixtures.Plan.create(%{user_id: user.id})
 
-      conn = post build_conn(), account_path(build_conn(), :create), %{account: @create_attrs, plan_id: plan.id, token: user.token}
+      conn = post build_conn(), Routes.plan_account_path(build_conn(), :create), %{account: @create_attrs, plan_id: plan.id, token: user.token}
       body = json_response(conn, 201)
 
       assert body["data"]["id"]
@@ -27,7 +27,7 @@ defmodule BudgetSimpleWeb.AccountControllerTest do
       second_user = Fixtures.User.create()
       plan = Fixtures.Plan.create(%{user_id: first_user.id})
 
-      conn = post build_conn(), account_path(build_conn(), :create), %{account: @create_attrs, plan_id: plan.id, token: second_user.token}
+      conn = post build_conn(), Routes.plan_account_path(build_conn(), :create), %{account: @create_attrs, plan_id: plan.id, token: second_user.token}
       assert json_response(conn, 401)
     end
 
@@ -35,7 +35,7 @@ defmodule BudgetSimpleWeb.AccountControllerTest do
       user = Fixtures.User.create()
       plan = Fixtures.Plan.create(%{user_id: user.id})
 
-      conn = post build_conn(), account_path(build_conn(), :create), %{account: @invalid_attrs, plan_id: plan.id, token: user.token}
+      conn = post build_conn(), Routes.plan_account_path(build_conn(), :create), %{account: @invalid_attrs, plan_id: plan.id, token: user.token}
       body = json_response(conn, 422)
 
       assert body["status"] == 422

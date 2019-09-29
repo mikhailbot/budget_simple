@@ -15,7 +15,7 @@ config :budget_simple, BudgetSimple.Repo,
   username: System.get_env("DATA_DB_USER"),
   password: System.get_env("DATA_DB_PASS"),
   hostname: System.get_env("DATA_DB_HOST"),
-  database: "gonano",
+  database: "budget_simple_test",
   pool_size: 10,
   pool: Ecto.Adapters.SQL.Sandbox
 
@@ -29,5 +29,5 @@ config :argon2_elixir,
 #config :argon2_elixir,
   #t_cost: 2,
   #m_cost: 8
-config :bcrypt_elixir, log_rounds: 4
+# config :bcrypt_elixir, log_rounds: 4
 #config :pbkdf2_elixir, rounds: 1

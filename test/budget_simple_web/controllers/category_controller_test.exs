@@ -17,7 +17,7 @@ defmodule BudgetSimpleWeb.CategoryControllerTest do
       conn = post conn, plan_path(conn, :create), %{plan: attrs, token: user.token}
       plan_id = json_response(conn, 201)["data"]["id"]
 
-      conn = post build_conn(), category_path(build_conn(), :create), %{plan_id: plan_id, name: "some category name", token: user.token}
+      conn = post build_conn(), Routes.plan_category_path(build_conn(), :create), %{plan_id: plan_id, name: "some category name", token: user.token}
       body = json_response(conn, 201)
 
       assert body["data"]["id"]
@@ -32,7 +32,7 @@ defmodule BudgetSimpleWeb.CategoryControllerTest do
       plan_id = json_response(conn, 201)["data"]["id"]
 
       second_user = Fixtures.User.create()
-      conn = post build_conn(), category_path(build_conn(), :create), %{plan_id: plan_id, name: "some category name", token: second_user.token}
+      conn = post build_conn(), Routes.plan_category_path(build_conn(), :create), %{plan_id: plan_id, name: "some category name", token: second_user.token}
 
       assert json_response(conn, 401)
     end
@@ -46,13 +46,13 @@ defmodule BudgetSimpleWeb.CategoryControllerTest do
       conn = post conn, plan_path(conn, :create), %{plan: attrs, token: user.token}
       plan_id = json_response(conn, 201)["data"]["id"]
 
-      conn = post build_conn(), category_path(build_conn(), :create), %{plan_id: plan_id, name: "some category name", token: user.token}
+      conn = post build_conn(), Routes.plan_category_path(build_conn(), :create), %{plan_id: plan_id, name: "some category name", token: user.token}
       assert json_response(conn, 201)
 
-      conn = post build_conn(), category_path(build_conn(), :create), %{plan_id: plan_id, name: "some other category", token: user.token}
+      conn = post build_conn(), Routes.plan_category_path(build_conn(), :create), %{plan_id: plan_id, name: "some other category", token: user.token}
       assert json_response(conn, 201)
 
-      conn = get build_conn(), category_path(build_conn(), :index), %{plan_id: plan_id, token: user.token}
+      conn = get build_conn(), Routes.plan_category_path(build_conn(), :index), %{plan_id: plan_id, token: user.token}
       body = json_response(conn, 200)
 
       assert body["data"]["categories"]
@@ -68,10 +68,10 @@ defmodule BudgetSimpleWeb.CategoryControllerTest do
       conn = post conn, plan_path(conn, :create), %{plan: attrs, token: first_user.token}
       plan_id = json_response(conn, 201)["data"]["id"]
 
-      conn = post build_conn(), category_path(build_conn(), :create), %{plan_id: plan_id, name: "some category name", token: first_user.token}
+      conn = post build_conn(), Routes.plan_category_path(build_conn(), :create), %{plan_id: plan_id, name: "some category name", token: first_user.token}
       assert json_response(conn, 201)
 
-      conn = get build_conn(), category_path(build_conn(), :index), %{plan_id: plan_id, token: second_user.token}
+      conn = get build_conn(), Routes.plan_category_path(build_conn(), :index), %{plan_id: plan_id, token: second_user.token}
       assert json_response(conn, 401)
     end
   end

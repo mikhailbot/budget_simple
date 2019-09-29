@@ -41,9 +41,10 @@ defmodule BudgetSimple.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
+      {:plug_cowboy, "~> 1.0"},
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},
-      {:cors_plug, "~> 1.5"},
+      {:cors_plug, "~> 2.0.0"},
       {:secure_random, "~> 0.5"},
       {:bodyguard, "~> 2.2"},
       {:faker, "~> 0.10", only: :test},
@@ -62,7 +63,7 @@ defmodule BudgetSimple.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end
