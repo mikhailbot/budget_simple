@@ -4,7 +4,7 @@ defmodule BudgetSimple.AccountsTest do
   alias BudgetSimple.Accounts
   alias BudgetSimple.Accounts.User
 
-  @create_attrs %{email: "fred@example.com", password: "reallyHard2gue$$"}
+  @create_attrs %{first_name: "Fred", email: "fred@example.com", password: "reallyHard2gue$$"}
   @update_attrs %{email: "frederick@example.com"}
   @invalid_attrs %{email: "", password: ""}
 
