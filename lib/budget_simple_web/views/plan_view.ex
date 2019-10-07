@@ -9,6 +9,13 @@ defmodule BudgetSimpleWeb.PlanView do
     }
   end
 
+    def render("show.json", %{plan: plan}) do
+    %{data: %{
+        plan: render_one(plan, PlanView, "plan.json")
+      }
+    }
+  end
+
   def render("show.json", %{plan: plan, categories: categories, accounts: accounts, transactions: transactions}) do
     %{data: %{
         plan: render_one(plan, PlanView, "plan.json"),

@@ -3,7 +3,6 @@ defmodule BudgetSimpleWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug Phauxth.Authenticate, method: :token
   end
 
   pipeline :auth do
@@ -14,6 +13,7 @@ defmodule BudgetSimpleWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, only: [:create]
+    post "/sessions", SessionController, :create
   end
 
   scope "/api", BudgetSimpleWeb do
@@ -21,8 +21,6 @@ defmodule BudgetSimpleWeb.Router do
     pipe_through :auth
 
     post "/share", ShareController, :create
-    post "/sessions", SessionController, :create
-    resources "/users", UserController, only: [:index, :show, :create]
     resources "/plans", PlanController, only: [:index, :create, :show] do
       resources "/categories", CategoryController, only: [:index, :create]
       resources "/accounts", AccountController, only: [:create]
@@ -31,7 +29,7 @@ defmodule BudgetSimpleWeb.Router do
   end
 
   defp fetch_token_session(conn, _) do
-    with true <- Kernel.is_bitstring(conn.params["token"]), {:ok, user} <- BudgetSimple.Accounts.get_session_user(conn.params["token"]) do
+    with {:ok, user} <- BudgetSimple.Accounts.get_session_user(get_req_header(conn, "authorization")) do
       conn
       |> assign(:current_user, user)
     else

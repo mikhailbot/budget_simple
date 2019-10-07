@@ -37,6 +37,10 @@ defmodule BudgetSimple.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_by(%{"email": email}) do
+    Repo.get_by(User, email: email)
+  end
+
   def get_user_plans!(id) do
     Repo.get!(User, id)
     |> Repo.preload([:shared_plans, :plans])
@@ -125,7 +129,10 @@ defmodule BudgetSimple.Accounts do
   """
   def get_session!(id), do: Repo.get!(Session, id)
 
-  def get_session_user(token) do
+  def get_session_user(bearer_token) do
+    [ str | _ ] = bearer_token
+    [ _ | [ token | _ ] ] = String.split(str)
+
     session = Repo.get_by!(Session, token: token)
     user =
       User

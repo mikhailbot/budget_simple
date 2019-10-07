@@ -1,7 +1,11 @@
 defmodule BudgetSimpleWeb.SessionView do
   use BudgetSimpleWeb, :view
 
-  def render("info.json", %{info: token}) do
-    %{access_token: token}
+  def render("show.json", %{token: token}) do
+    %{session_token: token}
+  end
+
+  def render("error.json", _) do
+    %{errors: "failed to authenticate"}
   end
 end
